@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>登录</title>
+    <link rel="stylesheet" href="/assets/components/layui/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/global.css">
+</head>
+
+<body>
+<div class="login-box">
+    <form class="layui-form" lay-filter="loginBoxFilter">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input id="loginUsername" type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input id="loginPassword" type="password" name="password" required lay-verify="required" placeholder="请输入8-30位密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">记住密码</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="switch" lay-text="ON|OFF" checked lay-skin="switch"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="loginBoxFormFilter">登录</button>
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+    </form>
+</div>
+
+<script id="changePasswordBox" type="text/html">
+    <div class="change-password-box">
+        <form class="layui-form" lay-filter="changePasswordBoxFilter">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">原密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" required lay-verify="required" placeholder="请输入原8-30位密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="firstPassword" required lay-verify="required" placeholder="请输入新8-30位密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">确认新密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="secondPassword" required lay-verify="required" placeholder="请输入确认新8-30位密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="changePasswordBoxFormFilter">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+<script src="/assets/js/jquery-2.2.3.min.js "></script>
+<script src="/assets/components/layui/layui.all.js"></script>
+<script src="/assets/js/jquery.cookie.js"></script>
+<script type="application/javascript">
+    /**
+     * 本地保存密码设置
+     */
+    $(document).ready(function () {
+        $("#loginUsername").val($.cookie('username'));
+        $("#loginPassword").val($.cookie('password'));
+    });
+    /**
+     * 登录
+     */
+    layui.form.on('submit(loginBoxFormFilter)', function (data) {
+        $.post('/api/user/login', {username: data.field.username, password: data.field.password}, function (result) {
+            layui.layer.msg(result.message);
+            if (result.code === 0) {
+                $.cookie('username', data.field.username, {expires: 30});
+                $.cookie('password', data.field.password, {expires: 30});
+                location.replace("/");
+            }
+            //用户未激活
+            else if (result.code === 1103) {
+                openChangePasswordBox();
+            }
+        });
+        return false;
+    });
+
+    var changePasswordLayerIndex;
+
+    /**
+     * 打开修改密码框
+     */
+    function openChangePasswordBox() {
+        changePasswordLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            shade: [0.95, '#000'],
+            closeBtn: 0,
+            title: '初始密码',
+            content: $('#changePasswordBox').html(),
+            area: ['400px', '350px']
+        });
+    }
+
+    /**
+     * 修改密码
+     */
+    layui.form.on('submit(changePasswordBoxFormFilter)', function (data) {
+        $.post('/api/user/changePassword', {
+            username: data.field.username,
+            password: data.field.password,
+            firstPassword: data.field.firstPassword,
+            secondPassword: data.field.secondPassword
+        }, function (result) {
+            layui.layer.msg(result.message);
+            if (result.code === 0) {
+                layui.layer.close(changePasswordLayerIndex);
+            }
+        });
+        return false;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+}
+
+/**
+ *确认窗口按钮颜色
+ */
+.layui-layer-btn0 {
+    border-color: #009688 !important;
+    background-color: #009688 !important;
+}
+
+.login-box {
+    width: 360px;
+    margin: 200px auto 0;
+    border: solid 1px cadetblue;
+    border-radius: 0;
+    padding: 40px 50px 0 0;
+}
+
+.change-password-box {
+    padding: 20px 50px 20px 0;
+}

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>管理系统</title>
+    <link rel="stylesheet" href="/assets/components/layui/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/page.css">
+</head>
+
+<body>
+
+<div class="control-search">
+    <div class="control-search-item">
+        <label>角色ID:</label>
+        <input type="text" id="readRoleId" placeholder="请输入角色ID" autocomplete="off">
+    </div>
+    <div class="control-search-item">
+        <label>角色名:</label>
+        <input type="text" id="readRoleName" placeholder="请输入角色名" autocomplete="off">
+    </div>
+    <div class="control-search-item">
+        <button class="layui-btn layui-btn-sm" onclick="readRole()">查询</button>
+    </div>
+</div>
+<div class="control-tool">
+    <button onclick="openUpdateRoleBox()" class="layui-btn layui-btn-sm layui-btn-warm">编辑</button>
+    <button onclick="deleteRole()" class="layui-btn layui-btn-sm layui-btn-danger">删除</button>
+    <button onclick="openAssignRolePermissionBox()" class="layui-btn layui-btn-sm">分配权限</button>
+    <button onclick="openCreateRoleBox()" class="layui-btn layui-btn-sm">新建</button>
+</div>
+<table id="roleTable" lay-filter="roleTableFilter"></table>
+
+<script id="createRoleBox" type="text/html">
+    <form class="layui-form" lay-filter="createRoleFormFilter">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名</label>
+            <div class="layui-input-block">
+                <input type="text" name="roleName" required lay-verify="required" placeholder="请输入角色名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" required lay-verify="required" placeholder="请输入描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="createRoleBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="updateRoleBox" type="text/html">
+    <form class="layui-form" lay-filter="updateRoleFormFilter">
+        <input type="hidden" name="roleId">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名</label>
+            <div class="layui-input-block">
+                <input type="text" name="roleName" required lay-verify="required" placeholder="请输入角色名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" required lay-verify="required" placeholder="请输入描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="updateRoleBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="assignRolePermissionBox" type="text/html">
+    <form class="layui-form" lay-filter="assignRolePermissionFormFilter">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名</label>
+            <div class="layui-input-block">
+                <input title="角色id" type="hidden" name="roleId" autocomplete="off">
+                <input title="角色名" type="text" name="roleName" readonly autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限</label>
+            <div class="layui-input-block">
+                <div id="permission"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="assignRolePermissionBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script src="/assets/js/jquery-2.2.3.min.js "></script>
+<script src="/assets/components/layui/layui.all.js"></script>
+<script src="/assets/js/global.js"></script>
+<script>
+    layui.table.render({
+        elem: '#roleTable',
+        even: true,
+        size: 'sm',
+        url: '/api/role/readRole',
+        request: {
+            pageName: 'pageNumber',
+            limitName: 'pageSize'
+        },
+        response: {
+            statusName: 'code',
+            statusCode: 0,
+            msgName: 'message',
+            countName: 'total',
+            dataName: 'data'
+        },
+        page: {
+            theme: '#c00'
+        },
+        cols: [
+            [
+                {type: 'checkbox'},
+                {field: 'roleId', title: 'ID', width: 50},
+                {field: 'createTime', title: '创建时间', width: 145},
+                {field: 'updateTime', title: '更新时间', width: 145},
+                {field: 'roleName', title: '角色名', width: 200},
+                {field: 'description', title: '描述'},
+                {toolbar: '#roleTableToolBar'}
+            ]
+        ]
+    });
+
+    /**
+     * 加载角色列表
+     */
+    function readRole() {
+        layui.table.reload('roleTable', {
+            where: {
+                roleId: $('#readRoleId').val(),
+                roleName: $('#readRoleName').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    /**
+     * 删除角色
+     */
+    function deleteRole() {
+        var dataList = layui.table.checkStatus('roleTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要删除的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能删除一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        layer.confirm("确定删除[" + data.roleName + "]?", {
+            title: '',
+            btnAlign: 'c',
+            closeBtn: 0,
+            move: false
+        }, function (index) {
+            $.post('/api/role/deleteRole', {roleId: data.roleId}, function (result) {
+                layer.msg(result.message);
+                if (result.code === 0) {
+                    readRole();
+                    layui.layer.close(index);
+                }
+            });
+        });
+    }
+
+    var createRoleLayerIndex;
+
+    /**
+     * 打开新建角色框
+     */
+    function openCreateRoleBox() {
+        createRoleLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '新建角色',
+            content: $("#createRoleBox").html(),
+            area: ['500px', '350px'],
+            success: function (layero, index) {
+                layui.form.render(null, 'createRoleFormFilter');
+            }
+        });
+    }
+
+    /**
+     * 创建角色
+     */
+    layui.form.on('submit(createRoleBtnFilter)', function (data) {
+        $.post('/api/role/createRole', {roleName: data.field.roleName, description: data.field.description}, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readRole();
+                layui.layer.close(createRoleLayerIndex);
+            }
+        });
+        return false;
+    });
+
+    var updateRoleLayerIndex;
+
+    /**
+     * 打开更新角色框
+     */
+    function openUpdateRoleBox() {
+        var dataList = layui.table.checkStatus('roleTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要编辑的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能编辑一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        updateRoleLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '更新角色',
+            content: $("#updateRoleBox").html(),
+            area: ['500px', '350px'],
+            success: function (layero, index) {
+                layero.find("[name='roleId']").val(data.roleId);
+                layero.find("[name='roleName']").val(data.roleName);
+                layero.find("[name='description']").val(data.description);
+                layui.form.render(null, 'updateRoleFormFilter');
+            }
+        });
+    }
+
+    /**
+     * 更新角色
+     */
+    layui.form.on('submit(updateRoleBtnFilter)', function (data) {
+        $.post('/api/role/updateRole', {
+            roleId: data.field.roleId,
+            roleName: data.field.roleName,
+            description: data.field.description
+        }, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readRole();
+                layui.layer.close(updateRoleLayerIndex);
+            }
+        });
+        return false;
+    });
+
+    var assignRolePermissionLayerIndex;
+
+    /**
+     * 打开分配角色权限框
+     */
+    function openAssignRolePermissionBox() {
+        var dataList = layui.table.checkStatus('roleTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要编辑的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能编辑一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        assignRolePermissionLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '分配角色权限',
+            content: $("#assignRolePermissionBox").html(),
+            area: ['500px', '500px'],
+            success: function (layero, index) {
+                layero.find("[name='roleId']").val(data.roleId);
+                layero.find("[name='roleName']").val(data.roleName);
+                $.post('/api/permission/readPermissionByGroup', {
+                    "roleId": data.roleId
+                }, function (result) {
+                    if (result.code === 0) {
+                        var xx = $('#permission');
+                        $.each(result.data, function (i, item) {
+                            xx.append(String.format("<div style='padding-top: 5px;margin-top: 5px;border-top: 1px solid #C2BE9E;'>{}</div>", item.permissionGroupName));
+                            xx.append("<div>");
+                            $.each(item.permissionList, function (j, permission) {
+                                xx.append(String.format("<input type='checkbox' name='permissionId' {} value='{}' title='{}' lay-skin='primary'>",
+                                    permission.isAssign ? "checked" : "", permission.permissionId, permission.permissionName));
+                            });
+                            xx.append("</div>");
+                        });
+                    }
+                    layui.form.render(null, 'assignRolePermissionFormFilter');
+                });
+            }
+        });
+    }
+
+    /**
+     * 更新角色
+     */
+    layui.form.on('submit(assignRolePermissionBtnFilter)', function (data) {
+        var permissionIds = "";
+        $('#permission').find("input[type='checkbox']:checked").each(function () {
+            permissionIds += $(this).attr("value") + ",";
+        });
+        $.post('/api/role/assignRolePermission', {
+            roleId: data.field.roleId,
+            permissionIds: permissionIds
+        }, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readRole();
+                layui.layer.close(assignRolePermissionLayerIndex);
+            }
+        });
+        return false;
+    });
+</script>
+</body>
+</html>

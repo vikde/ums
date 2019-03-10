@@ -1,0 +1,133 @@
+.layui-header {
+    width: 100%;
+    position: fixed;
+    height: auto;
+}
+
+.layui-header .logo {
+    color: tan;
+    font-size: large;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 150px;
+    display: inline-block;
+}
+
+.layui-header .layui-nav {
+    float: right;
+    padding: 0;
+}
+
+.layui-header .layui-nav .layui-nav-item {
+    line-height: 40px;
+}
+
+.layui-header .layui-nav .layui-nav-child {
+    top: 40px;
+    padding: 5px 14px;
+}
+
+.layui-side {
+    top: 40px !important;
+    width: 160px !important;
+}
+
+.layui-side .layui-side-scroll {
+    width: 180px !important;
+}
+
+.layui-side .layui-side-scroll .layui-nav-tree {
+    width: 160px;
+}
+
+.layui-body {
+    top: 40px !important;
+    bottom: 0 !important;
+    left: 160px !important;
+}
+
+.layui-body .layui-tab {
+    margin: 0;
+    height: 100%;
+}
+
+.layui-body .layui-tab .layui-tab-title {
+    border-color: teal;
+    position: absolute;
+    width: 100%;
+    background-color: white;
+}
+
+.layui-body .layui-tab .layui-tab-title .layui-this::after {
+    border-left-color: teal;
+    border-right-color: teal;
+}
+
+.layui-body .layui-tab-item {
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.layui-body .layui-tab-content {
+    padding: 0;
+    height: 100%;
+}
+
+.layui-header .layui-nav-child {
+    left: unset;
+    right: -60px;
+}
+
+.layui-side-shadow {
+}
+
+@media screen and (max-width: 399px) {
+    .layui-side {
+        top: 100px !important;
+    }
+
+    .layui-body {
+        top: 100px !important;
+    }
+}
+
+@media screen and (max-width: 899px) {
+    .layui-side {
+        left: -160px;
+    }
+
+    .layui-side-show {
+        left: 0 !important;
+    }
+
+    .layui-side-shadow-show {
+        content: '';
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, .8);
+        z-index: 998;
+    }
+
+    .layui-side-more {
+        display: block !important;
+        position: fixed;
+        z-index: 998;
+        bottom: 15px;
+        left: 15px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 2px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, .7);
+        color: #fff;
+    }
+
+    .layui-body {
+        left: 0 !important;
+    }
+}

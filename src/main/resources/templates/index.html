@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>UMS</title>
+    <link rel="stylesheet" href="/assets/components/layui/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/index.css">
+    <link rel="stylesheet" href="/assets/css/global.css">
+</head>
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-cyan">
+        <div class="logo">UMS</div>
+        <ul class="layui-nav">
+            <li class="layui-nav-item">
+                <a href="javascript:"><span th:text="${user.getName()}"></span><span class="layui-nav-more"></span></a>
+                <div class="layui-nav-child">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="50">
+                            <col width="100">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>用户名</td>
+                            <td th:text="${user.getUsername()}"></td>
+                        </tr>
+                        <tr>
+                            <td>创建时间</td>
+                            <td th:text="${#dates.format(user.getCreateTime(), 'yyyy/MM/dd HH:mm:ss')}"></td>
+                        </tr>
+                        <tr>
+                            <td>本次登录时间</td>
+                            <td th:text="${#dates.format(user.getLoginTime(), 'yyyy/MM/dd HH:mm:ss')}"></td>
+                        </tr>
+                        <tr>
+                            <td>上次登录时间</td>
+                            <td th:text="${#dates.format(user.getPreLoginTime(), 'yyyy/MM/dd HH:mm:ss')}"></td>
+                        </tr>
+                        <tr>
+                            <td>登录次数</td>
+                            <td th:text="${user.getLoginCount()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li class="layui-nav-item"><a href="#" onclick="openChangePasswordBox()">修改密码</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="logout()">注销</a></li>
+        </ul>
+    </div>
+    <div class="layui-side layui-side-hide layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree site-demo-nav">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:">系统管理<span class="layui-nav-more"></span></a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this" th:if="${apiSet.contains('/api/permissionGroup/readPermissionGroup')}">
+                            <a href="javascript:" onclick="changeTab('权限组管理','/pages/permissionGroup')">权限组管理</a>
+                        </dd>
+                        <dd th:if="${apiSet.contains('/api/permission/readPermission')}">
+                            <a href="javascript:" onclick="changeTab('权限管理','/pages/permission')">权限管理</a>
+                        </dd>
+                        <dd th:if="${apiSet.contains('/api/role/readRole')}">
+                            <a href="javascript:" onclick="changeTab('角色管理','/pages/role')">角色管理</a>
+                        </dd>
+                        <dd th:if="${apiSet.contains('/api/user/readUser')}">
+                            <a href="javascript:" onclick="changeTab('用户管理','/pages/user')">用户管理</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body">
+        <div class="layui-tab" lay-filter="tabs" lay-allowClose="true">
+            <ul class="layui-tab-title">
+            </ul>
+            <div id="tabContent" class="layui-tab-content">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-side-more layui-hide" onclick="sideMore()">
+    <i class="layui-icon">&#xe602;</i>
+</div>
+<div class="layui-side-shadow" onclick="sideShadowHide()"></div>
+
+<script id="changePasswordBox" type="text/html">
+    <div class="change-password-box">
+        <form class="layui-form" lay-filter="changePasswordBoxFilter">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">原密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" required lay-verify="required" placeholder="请输入原8-30位密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="firstPassword" required lay-verify="required" placeholder="请输入新8-30位密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">确认新密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="secondPassword" required lay-verify="required" placeholder="请输入确认新8-30位密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="changePasswordBoxFormFilter">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+<script src="/assets/js/jquery-2.2.3.min.js "></script>
+<script src="/assets/components/layui/layui.all.js"></script>
+<script src="/assets/js/global.js"></script>
+<script type="application/javascript">
+    /**
+     * 切换或者增加一个新的tab
+     */
+    function changeTab(title, url) {
+        var element = layui.element;
+        sideShadowHide();
+        var tabId = url.replace(new RegExp('/', 'g'), "_");
+        var tab = $(String.format(".layui-tab-title li[lay-id={}]", tabId));
+        if (tab == null || tab.length === 0) {
+            var data = String.format("<iframe style='border: 0;width: 100%;height: 100%' src='{}'></iframe>", url);
+            element.tabAdd('tabs', {
+                title: title,
+                content: data,
+                id: tabId
+            });
+        }
+        element.tabChange('tabs', tabId);
+    }
+
+    var changePasswordLayerIndex;
+
+    /**
+     * 打开修改密码框
+     */
+    function openChangePasswordBox() {
+        changePasswordLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            shade: [0.95, '#000'],
+            title: '修改密码',
+            content: $('#changePasswordBox').html(),
+            area: ['400px', '350px']
+        });
+    }
+
+    /**
+     * 修改密码
+     */
+    layui.form.on('submit(changePasswordBoxFormFilter)', function (data) {
+        $.post('/api/user/changePassword', {
+            username: data.field.username,
+            password: data.field.password,
+            firstPassword: data.field.firstPassword,
+            secondPassword: data.field.secondPassword
+        }, function (result) {
+            layui.layer.msg(result.message);
+            if (result.code === 0) {
+                layui.layer.close(changePasswordLayerIndex);
+            }
+        });
+        return false;
+    });
+
+
+    /**
+     * 退出登录
+     */
+    function logout() {
+        layer.confirm('确定退出登录吗?', {
+            title: '',
+            btnAlign: 'c',
+            closeBtn: 0,
+            move: false,
+            shade: [0.95, '#000']
+        }, function (index) {
+            $.post('/api/user/logout', function (result) {
+                layer.msg(result.message);
+                if (result.code === 0) {
+                    location.replace("/login");
+                }
+            });
+        });
+    }
+
+    function sideMore() {
+        $('.layui-side-shadow').addClass('layui-side-shadow-show');
+        $(".layui-side").addClass('layui-side-show');
+    }
+
+    //隐藏
+    function sideShadowHide() {
+        $('.layui-side-shadow').removeClass('layui-side-shadow-show');
+        $(".layui-side").removeClass('layui-side-show');
+    }
+</script>
+</body>
+</html>

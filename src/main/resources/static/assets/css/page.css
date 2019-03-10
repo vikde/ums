@@ -1,0 +1,44 @@
+body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 35px 0 0 0;
+}
+
+.layui-layer-content {
+    padding: 20px 20px 0 0;
+}
+
+.control-tool {
+    padding: 5px 0 0 10px;
+}
+
+.control-search {
+    padding: 10px 0 5px 10px;
+    border-bottom: 1px solid darkgray;
+}
+
+.control-search .control-search-item {
+    display: inline-block;
+    padding: 3px 10px;
+}
+
+.control-search .control-search-item label {
+    display: inline-block;
+    min-width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
+}
+
+.control-search .control-search-item input {
+    height: 28px;
+    line-height: 28px;
+    border: 1px solid darkgray;
+    width: 140px;
+    padding: 0 2px;
+}
+
+.control-search .control-search-item input:focus {
+    border: 1px solid #ff9b52;
+}
+

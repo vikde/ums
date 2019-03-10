@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>管理系统</title>
+    <link rel="stylesheet" href="/assets/components/layui/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/page.css">
+</head>
+
+<body>
+<div class="control-search">
+    <div class="control-search-item">
+        <label>权限ID:</label>
+        <input type="text" id="readPermissionId" placeholder="请输入权限ID" autocomplete="off">
+    </div>
+    <div class="control-search-item">
+        <label>权限组ID:</label>
+        <input type="text" id="readPermissionGroupId" placeholder="请输入权限组ID" autocomplete="off">
+    </div>
+    <div class="control-search-item">
+        <button class="layui-btn layui-btn-sm" onclick="readPermission()">查询</button>
+    </div>
+</div>
+<div class="control-tool">
+    <button onclick="openUpdatePermissionBox()" class="layui-btn layui-btn-sm layui-btn-warm">编辑</button>
+    <button onclick="deletePermission()" class="layui-btn layui-btn-sm layui-btn-danger">删除</button>
+    <button onclick="openCreatePermissionBox()" class="layui-btn layui-btn-sm">新建</button>
+</div>
+<table id="permissionTable" lay-filter="permissionTableFilter"></table>
+
+<script id="createPermissionBox" type="text/html">
+    <form class="layui-form" lay-filter="createPermissionFormFilter">
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限组</label>
+            <div class="layui-input-block">
+                <select name="permissionGroupId" lay-verify="required" title="">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名</label>
+            <div class="layui-input-block">
+                <input type="text" name="permissionName" required lay-verify="required" placeholder="请输入权限名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="path" required lay-verify="required" placeholder="请输入权限地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" required lay-verify="required" placeholder="请输入权限描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="createPermissionBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script id="updatePermissionBox" type="text/html">
+    <form class="layui-form" lay-filter="updatePermissionFormFilter">
+        <input type="hidden" name="permissionId">
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限组</label>
+            <div class="layui-input-block">
+                <select name="permissionGroupId" lay-verify="required" title="">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名</label>
+            <div class="layui-input-block">
+                <input type="text" name="permissionName" required lay-verify="required" placeholder="请输入权限名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="path" required lay-verify="required" placeholder="请输入权限地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" required lay-verify="required" placeholder="请输入权限描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="updatePermissionBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script src="/assets/js/jquery-2.2.3.min.js "></script>
+<script src="/assets/components/layui/layui.all.js"></script>
+<script src="/assets/js/global.js"></script>
+<script type="application/javascript">
+    layui.table.render({
+        elem: '#permissionTable',
+        even: true,
+        size: 'sm',
+        url: '/api/permission/readPermission',
+        request: {
+            pageName: 'pageNumber',
+            limitName: 'pageSize'
+        },
+        response: {
+            statusName: 'code',
+            statusCode: 0,
+            msgName: 'message',
+            countName: 'total',
+            dataName: 'data'
+        },
+        page: {
+            theme: '#c00'
+        },
+        cols: [
+            [
+                {type: 'checkbox'},
+                {field: 'permissionId', title: 'ID', width: 50},
+                {field: 'createTime', title: '创建时间', width: 145},
+                {field: 'updateTime', title: '更新时间', width: 145},
+                {field: 'permissionName', title: '权限名', width: 150},
+                {field: 'permissionGroupName', title: '权限组名', width: 150},
+                {field: 'path', title: 'API', width: 450},
+                {field: 'description', title: '描述'}
+            ]
+        ]
+    });
+
+    /**
+     *获取权限
+     */
+    function readPermission() {
+        layui.table.reload('permissionTable', {
+            where: {
+                permissionId: $('#readPermissionId').val(),
+                permissionGroupId: $('#readPermissionGroupId').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    /**
+     * 删除权限
+     */
+    function deletePermission() {
+        var dataList = layui.table.checkStatus('permissionTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要删除的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能删除一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        layer.confirm("确定删除[" + data.permissionName + "]?", {
+            title: '',
+            btnAlign: 'c',
+            closeBtn: 0,
+            move: false
+        }, function (index) {
+            $.post('/api/permission/deletePermission', {permissionId: data.permissionId}, function (result) {
+                layer.msg(result.message);
+                if (result.code === 0) {
+                    readPermission();
+                    layui.layer.close(index);
+                }
+            });
+        });
+    }
+
+    var createPermissionLayerIndex;
+
+    /**
+     * 打开新建权限框
+     */
+    function openCreatePermissionBox() {
+        createPermissionLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '新建权限',
+            content: $("#createPermissionBox").html(),
+            area: ['500px', '420px'],
+            success: function (layero, index) {
+                $.post('/api/permissionGroup/readPermissionGroup', function (result) {
+                    if (result.code === 0) {
+                        $.each(result.data, function (i, item) {
+                            layero.find("[name='permissionGroupId']").append("<option value='" + item.permissionGroupId + "'>" + item.permissionGroupName + "</option>");
+                        });
+                    }
+                    layui.form.render(null, 'createPermissionFormFilter');
+                });
+            }
+        });
+    }
+
+    /**
+     * 创建权限
+     */
+    layui.form.on('submit(createPermissionBtnFilter)', function (data) {
+        $.post('/api/permission/createPermission', {
+            permissionGroupId: data.field.permissionGroupId,
+            permissionName: data.field.permissionName,
+            path: data.field.path,
+            description: data.field.description
+        }, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readPermission();
+                layui.layer.close(createPermissionLayerIndex);
+            }
+        });
+        return false;
+    });
+
+    var updatePermissionLayerIndex;
+
+    /**
+     * 打开更新权限框
+     */
+    function openUpdatePermissionBox() {
+        var dataList = layui.table.checkStatus('permissionTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要编辑的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能编辑一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        updatePermissionLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '更新权限',
+            content: $("#updatePermissionBox").html(),
+            area: ['480px', '410px'],
+            success: function (layero, index) {
+                $.post('/api/permissionGroup/readPermissionGroup', function (result) {
+                    if (result.code === 0) {
+                        $.each(result.data, function (i, item) {
+                            layero.find("[name='permissionGroupId']").append("<option value='" + item.permissionGroupId + "'>" + item.permissionGroupName + "</option>");
+                        });
+                    }
+                    layero.find("[name='permissionGroupId']").val(data.permissionGroupId);
+                    layero.find("[name='permissionId']").val(data.permissionId);
+                    layero.find("[name='permissionName']").val(data.permissionName);
+                    layero.find("[name='description']").val(data.description);
+                    layero.find("[name='path']").val(data.path);
+                    layui.form.render(null, 'updatePermissionFormFilter');
+                });
+            }
+        });
+    }
+
+    /**
+     * 更新权限
+     */
+    layui.form.on('submit(updatePermissionBtnFilter)', function (data) {
+        $.post('/api/permission/updatePermission', {
+            permissionId: data.field.permissionId,
+            permissionGroupId: data.field.permissionGroupId,
+            permissionName: data.field.permissionName,
+            path: data.field.path,
+            description: data.field.description
+        }, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readPermission();
+                layui.layer.close(updatePermissionLayerIndex);
+            }
+        });
+        return false;
+    });
+</script>
+</body>
+</html>

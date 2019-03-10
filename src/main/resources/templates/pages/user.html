@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>管理系统</title>
+    <link rel="stylesheet" href="/assets/components/layui/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/page.css">
+</head>
+
+<body>
+
+<div class="control-search">
+    <div class="control-search-item">
+        <label>用户ID:</label>
+        <input id="searchUserId" type="text" placeholder="请输入用户ID" autocomplete="off">
+    </div>
+    <div class="control-search-item">
+        <label>用户名:</label>
+        <input id="searchUsername" type="text" placeholder="请输入用户名" autocomplete="off">
+    </div>
+    <div class="control-search-item">
+        <label>姓名:</label>
+        <input id="searchName" type="text" placeholder="请输入姓名" autocomplete="off">
+    </div>
+    <div class="control-search-item">
+        <button class="layui-btn layui-btn-sm" onclick="readUser()">查询</button>
+    </div>
+</div>
+<div class="control-tool">
+    <button class="layui-btn layui-btn-sm layui-btn-warm" onclick="openUpdateUserBox()">修改</button>
+    <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteUser()">删除</button>
+    <button class="layui-btn layui-btn-sm" onclick="openAssignUserRoleBox()">分配角色</button>
+    <button class="layui-btn layui-btn-sm" onclick="openCreateUserBox()">新建</button>
+</div>
+<table id="userTable" lay-filter="userTtableFilter"></table>
+
+<script id="createUserBox" type="text/html">
+    <form class="layui-form" lay-filter="createUserFormFilter">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required lay-verify="required" placeholder="请输入唯一的用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="createUserBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="updateUserBox" type="text/html">
+    <form class="layui-form" lay-filter="updatUserFormFilter">
+        <input type="hidden" name="userId">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="updateUserBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="assignUserRoleBox" type="text/html">
+    <form class="layui-form" lay-filter="assignUserRoleFormFilter">
+        <input type="hidden" name="userId">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div id="xxx" class="layui-input-block">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="assignUserRoleBtnFilter">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script src="/assets/js/jquery-2.2.3.min.js "></script>
+<script src="/assets/components/layui/layui.all.js"></script>
+<script src="/assets/js/global.js"></script>
+<script>
+    layui.table.render({
+        elem: '#userTable',
+        even: true,
+        size: 'sm',
+        url: '/api/user/readUser',
+        request: {
+            pageName: 'pageNumber',
+            limitName: 'pageSize'
+        },
+        response: {
+            statusName: 'code',
+            statusCode: 0,
+            msgName: 'message',
+            countName: 'total',
+            dataName: 'data'
+        },
+        page: {
+            theme: '#c00'
+        },
+        cols: [
+            [
+                {type: 'checkbox'},
+                {field: 'userId', title: 'ID', width: 50},
+                {field: 'createTime', title: '创建时间', width: 145},
+                {field: 'updateTime', title: '更新时间', width: 145},
+                {
+                    field: 'userStatusType', title: '用户状态', width: 130, templet: function (data) {
+                        if (1 === data.userStatusType) {
+                            return String.format("<div style='color: tan'>未激活</div>")
+                        } else if (2 === data.userStatusType) {
+                            return String.format("<div style='color: darkgreen'>正常</div>")
+                        } else if (3 === data.userStatusType) {
+                            return String.format("<div style='color: red'>已删除</div>")
+                        } else {
+                            return "<div >未知</div>";
+                        }
+                    }
+                },
+                {field: 'username', title: '用户名'},
+                {field: 'name', title: '姓名'}
+            ]
+        ]
+    });
+
+    /**
+     *
+     */
+    function readUser() {
+        layui.table.reload('userTable', {
+            where: {
+                userId: $('#searchUserId').val(),
+                username: $('#searchUsername').val(),
+                name: $('#searchName').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    /**
+     * 删除用户
+     */
+    function deleteUser() {
+        var dataList = layui.table.checkStatus('userTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要删除的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能删除一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        layer.confirm("确定删除[" + data.username + "]?", {
+            title: '',
+            btnAlign: 'c',
+            closeBtn: 0,
+            move: false
+        }, function (index) {
+            $.post('/api/user/deleteUser', {userId: data.userId}, function (result) {
+                layer.msg(result.message);
+                if (result.code === 0) {
+                    readUser();
+                    layui.layer.close(index);
+                }
+            });
+        });
+    }
+
+    var createUserLayerIndex;
+
+    /**
+     * 打开新建用户框
+     */
+    function openCreateUserBox() {
+        createUserLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '新建用户',
+            content: $("#createUserBox").html(),
+            area: ['500px', '250px'],
+            success: function (layero, index) {
+                layui.form.render(null, 'createUserFormFilter');
+            }
+        });
+    }
+
+    /**
+     * 创建用户
+     */
+    layui.form.on('submit(createUserBtnFilter)', function (data) {
+        $.post('/api/user/createUser', {username: data.field.username, name: data.field.name}, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readUser();
+                layui.layer.close(createUserLayerIndex);
+            }
+        });
+        return false;
+    });
+
+    var updateUserLayerIndex;
+
+    /**
+     * 打开更新用户框
+     */
+    function openUpdateUserBox() {
+        var dataList = layui.table.checkStatus('userTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要编辑的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能编辑一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        updateUserLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '更新用户',
+            content: $("#updateUserBox").html(),
+            area: ['500px', '200px'],
+            success: function (layero, index) {
+                layero.find("[name='userId']").val(data.userId);
+                layero.find("[name='name']").val(data.name);
+                layui.form.render(null, 'updateUserFormFilter');
+            }
+        });
+    }
+
+    /**
+     * 更新用户
+     */
+    layui.form.on('submit(updateUserBtnFilter)', function (data) {
+        $.post('/api/user/updateUser', {
+            userId: data.field.userId,
+            name: data.field.name
+        }, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readUser();
+                layui.layer.close(updateUserLayerIndex);
+            }
+        });
+        return false;
+    });
+
+    var assignUserRoleLayerIndex;
+
+    /**
+     * 打开分配用户角色
+     */
+    function openAssignUserRoleBox() {
+        var dataList = layui.table.checkStatus('userTable').data;
+        if (dataList.length <= 0) {
+            layer.msg('请选择需要编辑的数据!');
+            return;
+        }
+        if (dataList.length > 1) {
+            layer.msg('每次只能编辑一条数据!');
+            return;
+        }
+        var data = dataList.pop();
+        assignUserRoleLayerIndex = layui.layer.open({
+            type: 1,
+            move: false,
+            title: '分配用户角色',
+            content: $("#assignUserRoleBox").html(),
+            area: ['500px', '400px'],
+            success: function (layero, index) {
+                $.post('/api/role/readUserRoleAssign', {"userId": data.userId}, function (result) {
+                    if (result.code === 0) {
+                        $.each(result.data, function (i, item) {
+                            layero.find("#xxx").append(String.format("<input type='checkbox' name='roleId' {} value='{}' title='{}'>",
+                                item.isAssign ? "checked" : "", item.roleId, item.roleName));
+                        });
+                    }
+                    layero.find("[name='userId']").val(data.userId);
+                    layero.find("[name='name']").val(data.name);
+                    layui.form.render(null, 'assignUserRoleFormFilter');
+                });
+            }
+        });
+    }
+
+    /**
+     * 更新用户
+     */
+    layui.form.on('submit(assignUserRoleBtnFilter)', function (data) {
+        var roleIds = "";
+        $('#xxx').find("input[type='checkbox']:checked").each(function () {
+            roleIds += $(this).attr("value") + ",";
+        });
+        $.post('/api/user/assignUserRole', {
+            userId: data.field.userId,
+            roleIds: roleIds
+        }, function (result) {
+            layer.msg(result.message);
+            if (result.code === 0) {
+                readUser();
+                layui.layer.close(assignUserRoleLayerIndex);
+            }
+        });
+        return false;
+    });
+
+</script>
+</body>
+</html>
