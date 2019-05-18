@@ -174,6 +174,8 @@
                     readRole();
                     layui.layer.close(index);
                 }
+            }).error(function (result) {
+                layer.msg(result.responseJSON.message);
             });
         });
     }
@@ -206,6 +208,8 @@
                 readRole();
                 layui.layer.close(createRoleLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });
@@ -255,6 +259,8 @@
                 readRole();
                 layui.layer.close(updateRoleLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });
@@ -280,7 +286,7 @@
             move: false,
             title: '分配角色权限',
             content: $("#assignRolePermissionBox").html(),
-            area: ['500px', '500px'],
+            area: ['700px', '500px'],
             success: function (layero, index) {
                 layero.find("[name='roleId']").val(data.roleId);
                 layero.find("[name='roleName']").val(data.roleName);
@@ -288,18 +294,20 @@
                     "roleId": data.roleId
                 }, function (result) {
                     if (result.code === 0) {
-                        var xx = $('#permission');
+                        var contentStr = $('#permission');
                         $.each(result.data, function (i, item) {
-                            xx.append(String.format("<div style='padding-top: 5px;margin-top: 5px;border-top: 1px solid #C2BE9E;'>{}</div>", item.permissionGroupName));
-                            xx.append("<div>");
+                            contentStr.append(String.format("<div style='padding-top: 5px;margin-top: 5px;border-top: 1px solid #C2BE9E;'>{}</div>", item.permissionGroupName));
+                            contentStr.append("<div>");
                             $.each(item.permissionList, function (j, permission) {
-                                xx.append(String.format("<input type='checkbox' name='permissionId' {} value='{}' title='{}' lay-skin='primary'>",
+                                contentStr.append(String.format("<input type='checkbox' name='permissionId' {} value='{}' title='{}' lay-skin='primary'>",
                                     permission.isAssign ? "checked" : "", permission.permissionId, permission.permissionName));
                             });
-                            xx.append("</div>");
+                            contentStr.append("</div>");
                         });
                     }
                     layui.form.render(null, 'assignRolePermissionFormFilter');
+                }).error(function (result) {
+                    layer.msg(result.responseJSON.message);
                 });
             }
         });
@@ -322,6 +330,8 @@
                 readRole();
                 layui.layer.close(assignRolePermissionLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });

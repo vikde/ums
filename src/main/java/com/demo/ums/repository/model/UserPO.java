@@ -5,9 +5,9 @@ import java.util.Date;
 
 /**
  * @author mybatis-generator
- * @date 2019/03/09
+ * @date 2019/05/01
  */
-public class User implements Serializable {
+public class UserPO implements Serializable {
     /**
      *用户id
      */
@@ -151,7 +151,7 @@ public class User implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        User other = (User) that;
+        UserPO other = (UserPO) that;
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))

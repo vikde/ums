@@ -1,17 +1,16 @@
 package com.demo.ums.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.demo.ums.common.JsonResult;
 import com.demo.ums.common.exception.ApiException;
-import com.demo.ums.common.type.JsonResultType;
 import com.demo.ums.controller.permission.model.*;
 import com.demo.ums.repository.mapper.PermissionMapper;
 import com.demo.ums.repository.mapper.ext.ExtPermissionMapper;
 import com.demo.ums.repository.mapper.ext.ExtRolePermissionMapper;
-import com.demo.ums.repository.model.Permission;
-import com.demo.ums.repository.model.RolePermission;
-import com.demo.ums.repository.model.RolePermissionKey;
+import com.demo.ums.repository.model.PermissionPO;
+import com.demo.ums.repository.model.RolePermissionPO;
+import com.demo.ums.repository.model.RolePermissionPOKey;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -47,9 +46,9 @@ public class PermissionService {
      */
     public void deletePermission(int permissionId) throws ApiException {
         PageHelper.startPage(1, 1);
-        List<RolePermission> rolePermissions = extRolePermissionMapper.readRolePermission(null, permissionId);
+        List<RolePermissionPO> rolePermissions = extRolePermissionMapper.readRolePermission(null, permissionId);
         if (!CollectionUtils.isEmpty(rolePermissions)) {
-            throw new ApiException(JsonResultType.PERMISSION_USED);
+            throw new ApiException("权限还在使用");
         }
         permissionMapper.deleteByPrimaryKey(permissionId);
     }
@@ -58,7 +57,7 @@ public class PermissionService {
      * 更新权限
      */
     public void updatePermission(UpdatePermissionRequest updatePermissionRequest) {
-        Permission permission = new Permission();
+        PermissionPO permission = new PermissionPO();
         permission.setPermissionId(updatePermissionRequest.getPermissionId());
         permission.setPermissionGroupId(updatePermissionRequest.getPermissionGroupId());
         permission.setPermissionName(updatePermissionRequest.getPermissionName());
@@ -90,9 +89,9 @@ public class PermissionService {
         //全部权限
         List<ReadPermissionResponse> permissionList = extPermissionMapper.readPermission(null, null);
         //角色权限列表
-        List<RolePermission> rolePermissionList = extRolePermissionMapper.readRolePermission(roleId, null);
+        List<RolePermissionPO> rolePermissionList = extRolePermissionMapper.readRolePermission(roleId, null);
         //已经存在的角色
-        Set<Integer> permissionSet = rolePermissionList.stream().map(RolePermissionKey::getPermissionId).collect(Collectors.toSet());
+        Set<Integer> permissionSet = rolePermissionList.stream().map(RolePermissionPOKey::getPermissionId).collect(Collectors.toSet());
 
         Map<Integer, ReadPermissionByGroupResponse> resultMap = new HashMap<>();
         for (ReadPermissionResponse permission : permissionList) {

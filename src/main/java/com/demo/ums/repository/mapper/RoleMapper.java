@@ -1,6 +1,6 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.Role;
+import com.demo.ums.repository.model.RolePO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -14,57 +14,53 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
-/**
- * @author vikde
- * @date 2019/03/10
- */
 @Mapper
 @Repository
 public interface RoleMapper {
     @Delete({
-            "delete from role",
-            "where roleId = #{roleId,jdbcType=INTEGER}"
+        "delete from role",
+        "where roleId = #{roleId,jdbcType=INTEGER}"
     })
     int deleteByPrimaryKey(Integer roleId);
 
     @Insert({
-            "insert into role (roleName, description, ",
-            "createTime, updateTime)",
-            "values (#{roleName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, ",
-            "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
+        "insert into role (roleName, description, ",
+        "createTime, updateTime)",
+        "values (#{roleName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, ",
+        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
     })
-    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "roleId", before = false, resultType = Integer.class)
-    int insert(Role record);
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="roleId", before=false, resultType=Integer.class)
+    int insert(RolePO record);
 
-    @InsertProvider(type = RoleSqlProvider.class, method = "insertSelective")
-    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "roleId", before = false, resultType = Integer.class)
-    int insertSelective(Role record);
+    @InsertProvider(type=RoleSqlProvider.class, method="insertSelective")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="roleId", before=false, resultType=Integer.class)
+    int insertSelective(RolePO record);
 
     @Select({
-            "select",
-            "roleId, roleName, description, createTime, updateTime",
-            "from role",
-            "where roleId = #{roleId,jdbcType=INTEGER}"
+        "select",
+        "roleId, roleName, description, createTime, updateTime",
+        "from role",
+        "where roleId = #{roleId,jdbcType=INTEGER}"
     })
     @Results({
-            @Result(column = "roleId", property = "roleId", jdbcType = JdbcType.INTEGER, id = true),
-            @Result(column = "roleName", property = "roleName", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "description", property = "description", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "createTime", property = "createTime", jdbcType = JdbcType.TIMESTAMP),
-            @Result(column = "updateTime", property = "updateTime", jdbcType = JdbcType.TIMESTAMP)
+        @Result(column="roleId", property="roleId", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="roleName", property="roleName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
+        @Result(column="createTime", property="createTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="updateTime", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    Role selectByPrimaryKey(Integer roleId);
+    RolePO selectByPrimaryKey(Integer roleId);
 
-    @UpdateProvider(type = RoleSqlProvider.class, method = "updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(Role record);
+    @UpdateProvider(type=RoleSqlProvider.class, method="updateByPrimaryKeySelective")
+    int updateByPrimaryKeySelective(RolePO record);
 
     @Update({
-            "update role",
-            "set roleName = #{roleName,jdbcType=VARCHAR},",
-            "description = #{description,jdbcType=VARCHAR},",
-            "createTime = #{createTime,jdbcType=TIMESTAMP},",
-            "updateTime = #{updateTime,jdbcType=TIMESTAMP}",
-            "where roleId = #{roleId,jdbcType=INTEGER}"
+        "update role",
+        "set roleName = #{roleName,jdbcType=VARCHAR},",
+          "description = #{description,jdbcType=VARCHAR},",
+          "createTime = #{createTime,jdbcType=TIMESTAMP},",
+          "updateTime = #{updateTime,jdbcType=TIMESTAMP}",
+        "where roleId = #{roleId,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(Role record);
+    int updateByPrimaryKey(RolePO record);
 }

@@ -1,6 +1,6 @@
 package com.demo.ums.common.exception;
 
-import com.demo.ums.common.type.JsonResultType;
+import org.springframework.http.HttpStatus;
 
 /**
  * Created on 2017/5/8.
@@ -8,19 +8,24 @@ import com.demo.ums.common.type.JsonResultType;
  * @author vikde
  */
 public class ApiException extends Exception {
-    private JsonResultType jsonResultType;
+    private HttpStatus httpStatus;
 
-    public ApiException(JsonResultType jsonResultType) {
-        super(jsonResultType.getDefaultMessage(), null, false, false);
-        this.jsonResultType = jsonResultType;
+    public ApiException(HttpStatus httpStatus) {
+        super(httpStatus.getReasonPhrase(), null, false, false);
+        this.httpStatus = httpStatus;
     }
 
-    public ApiException(JsonResultType jsonResultType, String message) {
+    public ApiException(String message) {
         super(message, null, false, false);
-        this.jsonResultType = jsonResultType;
+        this.httpStatus = HttpStatus.BAD_REQUEST;
     }
 
-    public JsonResultType getJsonResultType() {
-        return jsonResultType;
+    public ApiException(HttpStatus httpStatus, String message) {
+        super(message, null, false, false);
+        this.httpStatus = httpStatus;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 }

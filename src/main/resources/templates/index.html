@@ -57,16 +57,16 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:">系统管理<span class="layui-nav-more"></span></a>
                     <dl class="layui-nav-child">
-                        <dd class="layui-this" th:if="${apiSet.contains('/api/permissionGroup/readPermissionGroup')}">
+                        <dd class="layui-this" th:if="${authoritySet.contains('readPermissionGroup')}">
                             <a href="javascript:" onclick="changeTab('权限组管理','/pages/permissionGroup')">权限组管理</a>
                         </dd>
-                        <dd th:if="${apiSet.contains('/api/permission/readPermission')}">
+                        <dd th:if="${authoritySet.contains('readPermission')}">
                             <a href="javascript:" onclick="changeTab('权限管理','/pages/permission')">权限管理</a>
                         </dd>
-                        <dd th:if="${apiSet.contains('/api/role/readRole')}">
+                        <dd th:if="${authoritySet.contains('readRole')}">
                             <a href="javascript:" onclick="changeTab('角色管理','/pages/role')">角色管理</a>
                         </dd>
-                        <dd th:if="${apiSet.contains('/api/user/readUser')}">
+                        <dd th:if="${authoritySet.contains('readUser')}">
                             <a href="javascript:" onclick="changeTab('用户管理','/pages/user')">用户管理</a>
                         </dd>
                     </dl>
@@ -174,7 +174,9 @@
             secondPassword: data.field.secondPassword
         }, function (result) {
             layui.layer.msg(result.message);
-            if (result.code === 0) {
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
+            if (result.responseJSON.code === 0) {
                 layui.layer.close(changePasswordLayerIndex);
             }
         });
@@ -193,9 +195,14 @@
             move: false,
             shade: [0.95, '#000']
         }, function (index) {
-            $.post('/api/user/logout', function (result) {
+            $.post('/logout', function (result) {
                 layer.msg(result.message);
                 if (result.code === 0) {
+                    location.replace("/login");
+                }
+            }).error(function (result) {
+                layer.msg(result.responseJSON.message);
+                if (result.responseJSON.code === 0) {
                     location.replace("/login");
                 }
             });

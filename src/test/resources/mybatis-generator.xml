@@ -33,32 +33,32 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"
-               enableCountByExample="false">
+        <table tableName="user" domainObjectName="UserPO" mapperName="UserMapper" sqlProviderName="UserSqlProvider" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="userId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="role" domainObjectName="Role" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"
-               enableCountByExample="false">
+        <table tableName="role" domainObjectName="RolePO" mapperName="RoleMapper" sqlProviderName="RoleSqlProvider" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="roleId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="permission_group" domainObjectName="PermissionGroup" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" enableCountByExample="false">
+        <table tableName="permission_group" domainObjectName="PermissionGroupPO" mapperName="PermissionGroupMapper" sqlProviderName="PermissionGroupSqlProvider"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="permissionGroupId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="permission" domainObjectName="Permission" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" enableCountByExample="false">
+        <table tableName="permission" domainObjectName="PermissionPO" mapperName="PermissionMapper" sqlProviderName="PermissionSqlProvider" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="permissionId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="role_permission" domainObjectName="RolePermission" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" enableCountByExample="false">
+        <table tableName="role_permission" domainObjectName="RolePermissionPO" mapperName="RolePermissionMapper" sqlProviderName="RolePermissionSqlProvider"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
         </table>
-        <table tableName="user_role" domainObjectName="UserRole" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" enableCountByExample="false">
+        <table tableName="user_role" domainObjectName="UserRolePO" mapperName="UserRoleMapper" sqlProviderName="UserRoleSqlProvider" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
         </table>
     </context>

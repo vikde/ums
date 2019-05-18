@@ -1,7 +1,7 @@
 package com.demo.ums.controller.permissiongroup.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.demo.ums.repository.model.PermissionGroup;
+import com.demo.ums.repository.model.PermissionGroupPO;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  * @author vikde
  * @date 2018/01/16
  */
-public class ReadPermissionGroupResponse {
+public class ReadPermissionGroupVO {
     private int permissionGroupId;
     private String permissionGroupName;
     private String description;
@@ -18,7 +18,7 @@ public class ReadPermissionGroupResponse {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public ReadPermissionGroupResponse(PermissionGroup permissionGroup) {
+    public ReadPermissionGroupVO(PermissionGroupPO permissionGroup) {
         this.permissionGroupId = permissionGroup.getPermissionGroupId();
         this.permissionGroupName = permissionGroup.getPermissionGroupName();
         this.description = permissionGroup.getDescription();
@@ -64,5 +64,16 @@ public class ReadPermissionGroupResponse {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "ReadPermissionGroupVO{" +
+                "permissionGroupId=" + permissionGroupId +
+                ", permissionGroupName='" + permissionGroupName + '\'' +
+                ", description='" + description + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

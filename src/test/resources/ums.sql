@@ -75,34 +75,36 @@ CREATE TABLE `role_permission` (
 CREATE INDEX role_permission_updateTime_idx ON role_permission (`updateTime`);
 
 
-INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('权限组', '');
-INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('权限', '');
-INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('角色', '');
-INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('用户', '');
+INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('权限组', '权限组');
+INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('权限', '权限');
+INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('角色', '角色');
+INSERT INTO permission_group (`permissionGroupName`, `description`) VALUES ('用户', '用户');
 
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建权限组', 1, '/api/permissionGroup/createPermissionGroup', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除权限组', 1, '/api/permissionGroup/deletePermissionGroup', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改权限组', 1, '/api/permissionGroup/updatePermissionGroup', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取权限组', 1, '/api/permissionGroup/readPermissionGroup', '');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建权限组', 1, 'createPermissionGroup', '创建权限组');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除权限组', 1, 'deletePermissionGroup', '删除权限组');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改权限组', 1, 'updatePermissionGroup', '修改权限组');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取权限组', 1, 'readPermissionGroup', '读取权限组');
 
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建权限', 2, '/api/permission/createPermission', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除权限', 2, '/api/permission/deletePermission', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改权限', 2, '/api/permission/updatePermission', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取权限', 2, '/api/permission/readPermission', '');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建权限', 2, 'createPermission', '创建权限');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除权限', 2, 'deletePermission', '删除权限');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改权限', 2, 'updatePermission', '修改权限');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取权限', 2, 'readPermission', '读取权限');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('分组读取权限', 2, 'readPermissionByGroup', '分组读取权限');
 
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建角色', 3, '/api/role/createRole', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除角色', 3, '/api/role/deleteRole', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改角色', 3, '/api/role/updateRole', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取角色', 3, '/api/role/readRole', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('分配角色权限', 3, '/api/role/assignRolePermission', '');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建角色', 3, 'createRole', '创建角色');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除角色', 3, 'deleteRole', '删除角色');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改角色', 3, 'updateRole', '修改角色');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取角色', 3, 'readRole', '读取角色');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('分配角色权限', 3, 'assignRolePermission', '分配角色权限');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取用户角色分配', 3, 'readUserRoleAssign', '读取用户角色分配');
 
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建用户', 4, '/api/user/createUser', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除用户', 4, '/api/user/deleteUser', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改用户', 4, '/api/user/updateUser', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取用户', 4, '/api/user/readUser', '');
-INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('分配用户角色', 4, '/api/user/assignUserRole', '');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('创建用户', 4, 'createUser', '创建用户');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('删除用户', 4, 'deleteUser', '删除用户');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('修改用户', 4, 'updateUser', '修改用户');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('读取用户', 4, 'readUser', '读取用户');
+INSERT INTO permission (`permissionName`, `permissionGroupId`, `path`, `description`) VALUES ('分配用户角色', 4, 'assignUserRole', '分配用户角色');
 
-INSERT INTO role (`roleName`, `description`) VALUES ('管理员角色', '');
+INSERT INTO role (`roleName`, `description`) VALUES ('管理员角色', '管理员角色');
 
 INSERT INTO user (`username`, `name`, `password`) VALUES ('admin', '管理员', '531b937a336529891035dd898cc836c0');
 
@@ -126,6 +128,8 @@ INSERT INTO role_permission (`roleId`, `permissionId`) VALUES (1, 15);
 INSERT INTO role_permission (`roleId`, `permissionId`) VALUES (1, 16);
 INSERT INTO role_permission (`roleId`, `permissionId`) VALUES (1, 17);
 INSERT INTO role_permission (`roleId`, `permissionId`) VALUES (1, 18);
+INSERT INTO role_permission (`roleId`, `permissionId`) VALUES (1, 19);
+INSERT INTO role_permission (`roleId`, `permissionId`) VALUES (1, 20);
 
 
 

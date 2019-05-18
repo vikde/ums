@@ -1,6 +1,6 @@
 package com.demo.ums.repository.mapper.ext;
 
-import com.demo.ums.repository.model.RolePermission;
+import com.demo.ums.repository.model.RolePermissionPO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,7 +25,7 @@ public interface ExtRolePermissionMapper {
      * @return 角色列表
      */
     @SelectProvider(type = ExtRolePermissionSqlProvider.class, method = "readRolePermission")
-    List<RolePermission> readRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);
+    List<RolePermissionPO> readRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);
 
     /**
      * 通过roleId删除全部的权限配置

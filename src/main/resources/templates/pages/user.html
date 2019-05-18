@@ -11,7 +11,7 @@
 
 <body>
 
-<div class="control-search">
+<div class="control-search" th:if="${authoritySet.contains('readRole')}">
     <div class="control-search-item">
         <label>用户ID:</label>
         <input id="searchUserId" type="text" placeholder="请输入用户ID" autocomplete="off">
@@ -29,10 +29,10 @@
     </div>
 </div>
 <div class="control-tool">
-    <button class="layui-btn layui-btn-sm layui-btn-warm" onclick="openUpdateUserBox()">修改</button>
-    <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteUser()">删除</button>
-    <button class="layui-btn layui-btn-sm" onclick="openAssignUserRoleBox()">分配角色</button>
-    <button class="layui-btn layui-btn-sm" onclick="openCreateUserBox()">新建</button>
+    <button class="layui-btn layui-btn-sm layui-btn-warm" onclick="openUpdateUserBox()" th:if="${authoritySet.contains('updateUser')}">修改</button>
+    <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteUser()" th:if="${authoritySet.contains('deleteUser')}">删除</button>
+    <button class="layui-btn layui-btn-sm" onclick="openAssignUserRoleBox()" th:if="${authoritySet.contains('assignUserRole')}">分配角色</button>
+    <button class="layui-btn layui-btn-sm" onclick="openCreateUserBox()" th:if="${authoritySet.contains('createUser')}">新建</button>
 </div>
 <table id="userTable" lay-filter="userTtableFilter"></table>
 
@@ -184,6 +184,8 @@
                     readUser();
                     layui.layer.close(index);
                 }
+            }).error(function (result) {
+                layer.msg(result.responseJSON.message);
             });
         });
     }
@@ -216,6 +218,8 @@
                 readUser();
                 layui.layer.close(createUserLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });
@@ -263,6 +267,8 @@
                 readUser();
                 layui.layer.close(updateUserLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });
@@ -300,13 +306,15 @@
                     layero.find("[name='userId']").val(data.userId);
                     layero.find("[name='name']").val(data.name);
                     layui.form.render(null, 'assignUserRoleFormFilter');
+                }).error(function (result) {
+                    layer.msg(result.responseJSON.message);
                 });
             }
         });
     }
 
     /**
-     * 更新用户
+     * 分配用户角色
      */
     layui.form.on('submit(assignUserRoleBtnFilter)', function (data) {
         var roleIds = "";
@@ -322,6 +330,8 @@
                 readUser();
                 layui.layer.close(assignUserRoleLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });

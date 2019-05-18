@@ -1,6 +1,6 @@
 package com.demo.ums.common.exception;
 
-import com.demo.ums.common.type.JsonResultType;
+import org.springframework.http.HttpStatus;
 
 /**
  * Created on 2017/7/3.
@@ -9,6 +9,6 @@ import com.demo.ums.common.type.JsonResultType;
  */
 public class NotFoundApiException extends ApiException {
     public NotFoundApiException() {
-        super(JsonResultType.SYSTEM_API_NOT_FOUND);
+        super(HttpStatus.NOT_FOUND);
     }
 }

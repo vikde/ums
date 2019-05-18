@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 /**
  * @author mybatis-generator
- * @date 2019/03/09
+ * @date 2019/05/01
  */
-public class UserRoleKey implements Serializable {
+public class UserRolePOKey implements Serializable {
     /**
      *用户id
      */
@@ -46,7 +46,7 @@ public class UserRoleKey implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        UserRoleKey other = (UserRoleKey) that;
+        UserRolePOKey other = (UserRolePOKey) that;
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
     }

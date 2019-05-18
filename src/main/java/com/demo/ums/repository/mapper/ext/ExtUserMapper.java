@@ -1,7 +1,7 @@
 package com.demo.ums.repository.mapper.ext;
 
-import com.demo.ums.repository.model.Permission;
-import com.demo.ums.repository.model.User;
+import com.demo.ums.repository.model.PermissionPO;
+import com.demo.ums.repository.model.UserPO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +45,7 @@ public interface ExtUserMapper {
      * @return 用户列表
      */
     @SelectProvider(type = ExtUserSqlProvider.class, method = "readUser")
-    List<User> readUser(@Param("userId") Integer userId, @Param("username") String username, @Param("name") String name);
+    List<UserPO> readUser(@Param("userId") Integer userId, @Param("username") String username, @Param("name") String name);
 
     /**
      * 通过用户名查询用户
@@ -54,16 +54,16 @@ public interface ExtUserMapper {
      * @return 用户
      */
     @Select("SELECT * FROM user WHERE username=#{username}")
-    User readUserByUsername(@Param("username") String username);
+    UserPO readUserByUsername(@Param("username") String username);
 
     /**
      * 与用户登录
      *
-     * @param userId    用户id
+     * @param username  用户名
      * @param loginTime 登陆时间
      */
-    @Update("UPDATE user SET preLoginTime=loginTime,loginCount=loginCount+1,loginTime=#{loginTime}  WHERE userId=#{userId}")
-    void login(@Param("userId") int userId, @Param("loginTime") Date loginTime);
+    @Update("UPDATE user SET preLoginTime=loginTime,loginCount=loginCount+1,loginTime=#{loginTime}  WHERE username=#{username}")
+    void login(@Param("username") String username, @Param("loginTime") Date loginTime);
 
     /**
      * 获取用户权限
@@ -75,7 +75,7 @@ public interface ExtUserMapper {
             "RIGHT JOIN role ON user_role.roleId = role.roleId RIGHT JOIN role_permission ON role.roleId = role_permission.roleId " +
             "RIGHT JOIN permission ON role_permission.permissionId = permission.permissionId " +
             "WHERE user.userId = #{userId}")
-    List<Permission> readUserPermission(@Param("userId") int userId);
+    List<PermissionPO> readUserPermission(@Param("userId") int userId);
 
     /**
      * 修改用户密码

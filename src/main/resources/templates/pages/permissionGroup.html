@@ -151,6 +151,8 @@
                     readPermissionGroup();
                     layui.layer.close(index);
                 }
+            }).error(function (result) {
+                layer.msg(result.responseJSON.message);
             });
         });
     }
@@ -183,6 +185,8 @@
                 readPermissionGroup();
                 layui.layer.close(createPermissionGroupLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });
@@ -232,6 +236,8 @@
                 readPermissionGroup();
                 layui.layer.close(updatePermissionGroupLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });

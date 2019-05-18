@@ -1,17 +1,16 @@
 package com.demo.ums.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.demo.ums.common.JsonResult;
 import com.demo.ums.common.exception.ApiException;
-import com.demo.ums.common.type.JsonResultType;
 import com.demo.ums.controller.permission.model.ReadPermissionResponse;
 import com.demo.ums.controller.permissiongroup.model.ReadPermissionGroupRequest;
-import com.demo.ums.controller.permissiongroup.model.ReadPermissionGroupResponse;
+import com.demo.ums.controller.permissiongroup.model.ReadPermissionGroupVO;
 import com.demo.ums.repository.mapper.PermissionGroupMapper;
 import com.demo.ums.repository.mapper.ext.ExtPermissionGroupMapper;
 import com.demo.ums.repository.mapper.ext.ExtPermissionMapper;
-import com.demo.ums.repository.model.PermissionGroup;
+import com.demo.ums.repository.model.PermissionGroupPO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -36,7 +35,7 @@ public class PermissionGroupService {
      * 创建权限组
      */
     public void createPermissionGroup(String permissionGroupName, String description) {
-        PermissionGroup permissionGroup = new PermissionGroup();
+        PermissionGroupPO permissionGroup = new PermissionGroupPO();
         permissionGroup.setPermissionGroupName(permissionGroupName);
         permissionGroup.setDescription(description);
         permissionGroupMapper.insertSelective(permissionGroup);
@@ -49,7 +48,7 @@ public class PermissionGroupService {
         PageHelper.startPage(1, 1);
         List<ReadPermissionResponse> permissions = extPermissionMapper.readPermission(null, permissionGroupId);
         if (!CollectionUtils.isEmpty(permissions)) {
-            throw new ApiException(JsonResultType.PERMISSION_GROUP_USED);
+            throw new ApiException("权限组还在使用");
         }
         permissionGroupMapper.deleteByPrimaryKey(permissionGroupId);
     }
@@ -58,7 +57,7 @@ public class PermissionGroupService {
      * 更新权限组
      */
     public void updatePermissionGroup(int permissionGroupId, String permissionGroupName, String description) {
-        PermissionGroup permissionGroup = new PermissionGroup();
+        PermissionGroupPO permissionGroup = new PermissionGroupPO();
         permissionGroup.setPermissionGroupId(permissionGroupId);
         permissionGroup.setPermissionGroupName(permissionGroupName);
         permissionGroup.setDescription(description);
@@ -72,15 +71,15 @@ public class PermissionGroupService {
         if (readPermissionGroupRequest.getPageNumber() != null && readPermissionGroupRequest.getPageSize() != null) {
             PageHelper.startPage(readPermissionGroupRequest.getPageNumber(), readPermissionGroupRequest.getPageSize());
         }
-        List<PermissionGroup> permissionGroupList = extPermissionGroupMapper.readPermissionGroup(readPermissionGroupRequest.getPermissionGroupId(), readPermissionGroupRequest.getPermissionGroupName());
+        List<PermissionGroupPO> permissionGroupList = extPermissionGroupMapper.readPermissionGroup(readPermissionGroupRequest.getPermissionGroupId(), readPermissionGroupRequest.getPermissionGroupName());
 
         JsonResult jsonResult = JsonResult.getSuccessInstance();
         jsonResult.setTotal(permissionGroupList instanceof Page ? ((Page) permissionGroupList).getTotal() : permissionGroupList.size());
-        List<ReadPermissionGroupResponse> readPermissionGroupResponses = new ArrayList<>(permissionGroupList.size());
-        for (PermissionGroup permissionGroup : permissionGroupList) {
-            readPermissionGroupResponses.add(new ReadPermissionGroupResponse(permissionGroup));
+        List<ReadPermissionGroupVO> readPermissionGroupRespons = new ArrayList<>(permissionGroupList.size());
+        for (PermissionGroupPO permissionGroup : permissionGroupList) {
+            readPermissionGroupRespons.add(new ReadPermissionGroupVO(permissionGroup));
         }
-        jsonResult.setData(readPermissionGroupResponses);
+        jsonResult.setData(readPermissionGroupRespons);
         return jsonResult;
     }
 }

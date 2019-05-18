@@ -5,9 +5,9 @@ import java.util.Date;
 
 /**
  * @author mybatis-generator
- * @date 2019/03/09
+ * @date 2019/05/01
  */
-public class Permission implements Serializable {
+public class PermissionPO implements Serializable {
     /**
      *权限id
      */
@@ -112,7 +112,7 @@ public class Permission implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Permission other = (Permission) that;
+        PermissionPO other = (PermissionPO) that;
         return (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()))
             && (this.getPermissionName() == null ? other.getPermissionName() == null : this.getPermissionName().equals(other.getPermissionName()))
             && (this.getPermissionGroupId() == null ? other.getPermissionGroupId() == null : this.getPermissionGroupId().equals(other.getPermissionGroupId()))

@@ -2,10 +2,11 @@ package com.demo.ums.controller.role;
 
 import com.demo.ums.common.JsonResult;
 import com.demo.ums.common.exception.ApiException;
-import com.demo.ums.controller.ApiController;
 import com.demo.ums.controller.role.model.*;
 import com.demo.ums.service.RoleService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
  * @author vikde
  * @date 2017/12/5
  */
-@ApiController
+@RestController
 @RequestMapping("/api/role/")
 public class RoleController {
     @Resource
@@ -23,6 +24,7 @@ public class RoleController {
     /**
      * 新建角色
      */
+    @PreAuthorize("hasAuthority('createRole')")
     @RequestMapping(value = "createRole")
     public JsonResult createPermissionGroup(@Valid CreateRoleRequest createRoleRequest) {
         roleService.createRole(createRoleRequest.getRoleName(), createRoleRequest.getDescription());
@@ -32,6 +34,7 @@ public class RoleController {
     /**
      * 删除角色
      */
+    @PreAuthorize("hasAuthority('deleteRole')")
     @RequestMapping(value = "deleteRole")
     public JsonResult deleteRole(@Valid DeleteRoleRequest deleteRoleRequest) throws ApiException {
         roleService.deleteRole(deleteRoleRequest.getRoleId());
@@ -41,6 +44,7 @@ public class RoleController {
     /**
      * 更新权限组
      */
+    @PreAuthorize("hasAuthority('updateRole')")
     @RequestMapping(value = "updateRole")
     public JsonResult updateRole(@Valid UpdateRoleRequest updateRoleRequest) {
         roleService.updateRole(updateRoleRequest);
@@ -50,6 +54,7 @@ public class RoleController {
     /**
      * 分配角色权限
      */
+    @PreAuthorize("hasAuthority('assignRolePermission')")
     @RequestMapping(value = "assignRolePermission")
     public JsonResult assignRolePermission(@Valid AssignRolePermissionRequest assignRolePermissionRequest) {
         roleService.assignRolePermission(assignRolePermissionRequest.getRoleId(), assignRolePermissionRequest.getPermissionIds());
@@ -59,6 +64,7 @@ public class RoleController {
     /**
      * 查询角色
      */
+    @PreAuthorize("hasAuthority('readRole')")
     @RequestMapping(value = "readRole")
     public JsonResult readRole(@Valid ReadRoleRequest readRoleRequest) {
         return roleService.readRole(readRoleRequest);
@@ -67,6 +73,7 @@ public class RoleController {
     /**
      * 查询用户角色分配列表
      */
+    @PreAuthorize("hasAuthority('readUserRoleAssign')")
     @RequestMapping(value = "readUserRoleAssign")
     public JsonResult readUserRoleAssign(@Valid ReadUserRoleAssignRequest readUserRoleAssignRequest) {
         return roleService.readUserRoleAssign(readUserRoleAssignRequest);

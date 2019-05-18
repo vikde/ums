@@ -1,15 +1,17 @@
 package com.demo.ums.controller.user.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.demo.ums.repository.model.User;
+import com.demo.ums.repository.model.UserPO;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * Created on 2017/07/02.
+ *
  * @author vikde
- * @date 2017/12/30
  */
-public class ReadUserResponse {
+public class ReadOwnVO implements Serializable {
     private int userId;
     private String username;
     private String name;
@@ -21,10 +23,11 @@ public class ReadUserResponse {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date preLoginTime;
     private int loginCount;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
 
-    public ReadUserResponse(User user) {
+    public ReadOwnVO() {
+    }
+
+    public ReadOwnVO(UserPO user) {
         userId = user.getUserId();
         username = user.getUsername();
         name = user.getName();
@@ -33,7 +36,6 @@ public class ReadUserResponse {
         loginTime = user.getLoginTime();
         preLoginTime = user.getPreLoginTime();
         loginCount = user.getLoginCount();
-        updateTime = user.getUpdateTime();
     }
 
     public int getUserId() {
@@ -100,11 +102,17 @@ public class ReadUserResponse {
         this.loginCount = loginCount;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    @Override
+    public String toString() {
+        return "ReadOwnVO{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", userStatusType=" + userStatusType +
+                ", createTime=" + createTime +
+                ", loginTime=" + loginTime +
+                ", preLoginTime=" + preLoginTime +
+                ", loginCount=" + loginCount +
+                '}';
     }
 }

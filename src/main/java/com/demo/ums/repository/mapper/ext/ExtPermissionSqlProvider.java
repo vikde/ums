@@ -25,7 +25,7 @@ public class ExtPermissionSqlProvider {
         if (permissionGroupId != null && permissionGroupId > 0) {
             sql.WHERE("p.permissionGroupId=#{permissionGroupId}");
         }
-        sql.ORDER_BY("updateTime desc");
+        sql.ORDER_BY("updateTime desc,p.permissionId desc");
         return sql.toString();
     }
 

@@ -2,15 +2,14 @@ package com.demo.ums.service;
 
 import com.demo.ums.common.JsonResult;
 import com.demo.ums.common.exception.ApiException;
-import com.demo.ums.common.type.JsonResultType;
 import com.demo.ums.controller.permission.model.ReadPermissionResponse;
 import com.demo.ums.controller.role.model.*;
 import com.demo.ums.repository.mapper.RoleMapper;
 import com.demo.ums.repository.mapper.ext.ExtPermissionMapper;
 import com.demo.ums.repository.mapper.ext.ExtRoleMapper;
 import com.demo.ums.repository.mapper.ext.ExtRolePermissionMapper;
-import com.demo.ums.repository.model.Role;
-import com.demo.ums.repository.model.RolePermission;
+import com.demo.ums.repository.model.RolePO;
+import com.demo.ums.repository.model.RolePermissionPO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Splitter;
@@ -51,9 +50,9 @@ public class RoleService {
      */
     public void deleteRole(int roleId) throws ApiException {
         PageHelper.startPage(1, 1);
-        List<RolePermission> rolePermissions = extRolePermissionMapper.readRolePermission(roleId, null);
+        List<RolePermissionPO> rolePermissions = extRolePermissionMapper.readRolePermission(roleId, null);
         if (!CollectionUtils.isEmpty(rolePermissions)) {
-            throw new ApiException(JsonResultType.ROLE_USED);
+            throw new ApiException("角色还在使用");
         }
         roleMapper.deleteByPrimaryKey(roleId);
     }
@@ -62,7 +61,7 @@ public class RoleService {
      * 更新角色
      */
     public void updateRole(UpdateRoleRequest updateRoleRequest) {
-        Role role = new Role();
+        RolePO role = new RolePO();
         role.setRoleId(updateRoleRequest.getRoleId());
         role.setRoleName(updateRoleRequest.getRoleName());
         role.setDescription(updateRoleRequest.getDescription());
@@ -98,15 +97,15 @@ public class RoleService {
         if (readRoleRequest.getPageNumber() != null && readRoleRequest.getPageSize() != null) {
             PageHelper.startPage(readRoleRequest.getPageNumber(), readRoleRequest.getPageSize());
         }
-        List<Role> roleList = extRoleMapper.readRole(readRoleRequest.getRoleId(), readRoleRequest.getRoleName());
+        List<RolePO> roleList = extRoleMapper.readRole(readRoleRequest.getRoleId(), readRoleRequest.getRoleName());
 
         JsonResult jsonResult = JsonResult.getSuccessInstance();
         jsonResult.setTotal(roleList instanceof Page ? ((Page) roleList).getTotal() : roleList.size());
-        List<ReadRoleResponse> readRoleResponses = new ArrayList<>(roleList.size());
-        for (Role role : roleList) {
-            readRoleResponses.add(new ReadRoleResponse(role));
+        List<ReadRoleVO> readRoleRespons = new ArrayList<>(roleList.size());
+        for (RolePO role : roleList) {
+            readRoleRespons.add(new ReadRoleVO(role));
         }
-        jsonResult.setData(readRoleResponses);
+        jsonResult.setData(readRoleRespons);
         return jsonResult;
     }
 

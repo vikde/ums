@@ -1,7 +1,9 @@
 package com.demo.ums.common;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.pagehelper.Page;
-import com.demo.ums.common.type.JsonResultType;
+import org.springframework.http.HttpStatus;
 
 import java.util.Collection;
 
@@ -15,7 +17,6 @@ public class JsonResult {
     private int code;
     private String message = "";
     private Object data;
-    private int costTime;
     /**
      * 可选参数
      */
@@ -25,32 +26,32 @@ public class JsonResult {
      * 创建一个返回实例
      */
     public static JsonResult getSuccessInstance() {
-        return getInstance(JsonResultType.SYSTEM_SUCCESS);
+        return getInstance(HttpStatus.OK, "success");
     }
 
     /**
      * 创建一个返回实例
      */
     public static JsonResult getSuccessInstance(String message) {
-        return getInstance(JsonResultType.SYSTEM_SUCCESS, message);
+        return getInstance(HttpStatus.OK, message);
     }
 
     /**
      * 创建一个返回实例
      */
-    public static JsonResult getInstance(JsonResultType jsonResultType) {
-        return getInstance(jsonResultType, jsonResultType.getDefaultMessage());
+    public static JsonResult getInstance(HttpStatus httpStatus) {
+        return getInstance(httpStatus, httpStatus.getReasonPhrase());
     }
 
     /**
      * 创建一个返回实例,自定义返回信息
      */
-    public static JsonResult getInstance(JsonResultType jsonResultType, String message) {
+    public static JsonResult getInstance(HttpStatus httpStatus, String message) {
+        int code = httpStatus == HttpStatus.OK ? 0 : httpStatus.value();
         JsonResult jsonResult = new JsonResult();
-        jsonResult.setCode(jsonResultType.getCode());
+        jsonResult.setCode(code);
         jsonResult.setMessage(message);
         jsonResult.setData(NULL_OBJECT);
-        jsonResult.setCostTime(0);
         return jsonResult;
     }
 
@@ -68,6 +69,10 @@ public class JsonResult {
                 total = (long) ((Collection) object).size();
             }
         }
+    }
+
+    public String toJson() {
+        return JSON.toJSONString(this, SerializerFeature.DisableCircularReferenceDetect);
     }
 
     public int getCode() {
@@ -92,14 +97,6 @@ public class JsonResult {
 
     public void setData(Object data) {
         this.data = data;
-    }
-
-    public int getCostTime() {
-        return costTime;
-    }
-
-    public void setCostTime(int costTime) {
-        this.costTime = costTime;
     }
 
     public Long getTotal() {

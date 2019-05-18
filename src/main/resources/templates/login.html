@@ -97,8 +97,10 @@
                 $.cookie('password', data.field.password, {expires: 30});
                 location.replace("/");
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
             //用户未激活
-            else if (result.code === 1103) {
+            if (result.responseJSON.code === 1103) {
                 openChangePasswordBox();
             }
         });
@@ -133,7 +135,9 @@
             secondPassword: data.field.secondPassword
         }, function (result) {
             layui.layer.msg(result.message);
-            if (result.code === 0) {
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
+            if (result.responseJSON.code === 0) {
                 layui.layer.close(changePasswordLayerIndex);
             }
         });

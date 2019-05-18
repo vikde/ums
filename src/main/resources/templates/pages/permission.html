@@ -181,6 +181,8 @@
                     readPermission();
                     layui.layer.close(index);
                 }
+            }).error(function (result) {
+                layer.msg(result.responseJSON.message);
             });
         });
     }
@@ -205,6 +207,8 @@
                         });
                     }
                     layui.form.render(null, 'createPermissionFormFilter');
+                }).error(function (result) {
+                    layer.msg(result.responseJSON.message);
                 });
             }
         });
@@ -225,6 +229,8 @@
                 readPermission();
                 layui.layer.close(createPermissionLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });
@@ -264,6 +270,8 @@
                     layero.find("[name='description']").val(data.description);
                     layero.find("[name='path']").val(data.path);
                     layui.form.render(null, 'updatePermissionFormFilter');
+                }).error(function (result) {
+                    layer.msg(result.responseJSON.message);
                 });
             }
         });
@@ -285,6 +293,8 @@
                 readPermission();
                 layui.layer.close(updatePermissionLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });

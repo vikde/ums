@@ -1,7 +1,7 @@
 package com.demo.ums.controller.role.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.demo.ums.repository.model.Role;
+import com.demo.ums.repository.model.RolePO;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * @author mybatis-generator
  */
-public class ReadRoleResponse implements Serializable {
+public class ReadRoleVO implements Serializable {
     private int roleId;
     private String roleName;
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
@@ -18,7 +18,7 @@ public class ReadRoleResponse implements Serializable {
     private Date updateTime;
     private String description;
 
-    public ReadRoleResponse(Role role) {
+    public ReadRoleVO(RolePO role) {
         this.roleId = role.getRoleId();
         this.roleName = role.getRoleName();
         this.createTime = role.getCreateTime();
@@ -64,5 +64,16 @@ public class ReadRoleResponse implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "ReadRoleVO{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -1,20 +1,15 @@
 package com.demo.ums.controller.user.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.demo.ums.repository.model.Permission;
-import com.demo.ums.repository.model.User;
+import com.demo.ums.repository.model.UserPO;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
- * Created on 2017/07/02.
- *
  * @author vikde
+ * @date 2017/12/30
  */
-public class ReadOwnResponse implements Serializable {
+public class ReadUserVO {
     private int userId;
     private String username;
     private String name;
@@ -26,12 +21,10 @@ public class ReadOwnResponse implements Serializable {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date preLoginTime;
     private int loginCount;
-    private List<Permission> permissionList = new ArrayList<>();
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
 
-    public ReadOwnResponse() {
-    }
-
-    public ReadOwnResponse(User user) {
+    public ReadUserVO(UserPO user) {
         userId = user.getUserId();
         username = user.getUsername();
         name = user.getName();
@@ -40,6 +33,7 @@ public class ReadOwnResponse implements Serializable {
         loginTime = user.getLoginTime();
         preLoginTime = user.getPreLoginTime();
         loginCount = user.getLoginCount();
+        updateTime = user.getUpdateTime();
     }
 
     public int getUserId() {
@@ -106,11 +100,26 @@ public class ReadOwnResponse implements Serializable {
         this.loginCount = loginCount;
     }
 
-    public List<Permission> getPermissionList() {
-        return permissionList;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setPermissionList(List<Permission> permissionList) {
-        this.permissionList = permissionList;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "ReadUserVO{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", userStatusType=" + userStatusType +
+                ", createTime=" + createTime +
+                ", loginTime=" + loginTime +
+                ", preLoginTime=" + preLoginTime +
+                ", loginCount=" + loginCount +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

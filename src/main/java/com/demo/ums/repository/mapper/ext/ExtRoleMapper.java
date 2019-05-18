@@ -1,7 +1,7 @@
 package com.demo.ums.repository.mapper.ext;
 
 import com.demo.ums.controller.role.model.ReadUserRoleAssignResponse;
-import com.demo.ums.repository.model.Role;
+import com.demo.ums.repository.model.RolePO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -40,7 +40,7 @@ public interface ExtRoleMapper {
      * @return 角色列表
      */
     @SelectProvider(type = ExtRoleSqlProvider.class, method = "readRole")
-    List<Role> readRole(@Param("roleId") Integer roleId, @Param("roleName") String roleName);
+    List<RolePO> readRole(@Param("roleId") Integer roleId, @Param("roleName") String roleName);
 
     /**
      * 查询用户角色分配列表
