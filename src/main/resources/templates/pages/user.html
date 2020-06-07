@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -11,7 +13,7 @@
 
 <body>
 
-<div class="control-search" th:if="${authoritySet.contains('readRole')}">
+<div class="control-search" sec:authorize="hasAuthority('readRole')">
     <div class="control-search-item">
         <label>用户ID:</label>
         <input id="searchUserId" type="text" placeholder="请输入用户ID" autocomplete="off">
@@ -29,7 +31,7 @@
     </div>
 </div>
 <div class="control-tool">
-    <button class="layui-btn layui-btn-sm layui-btn-warm" onclick="openUpdateUserBox()" th:if="${authoritySet.contains('updateUser')}">修改</button>
+    <button class="layui-btn layui-btn-sm layui-btn-warm" onclick="openUpdateUserBox()" sec:authorize="hasAuthority('updateUser')">修改</button>
     <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteUser()" th:if="${authoritySet.contains('deleteUser')}">删除</button>
     <button class="layui-btn layui-btn-sm" onclick="openAssignUserRoleBox()" th:if="${authoritySet.contains('assignUserRole')}">分配角色</button>
     <button class="layui-btn layui-btn-sm" onclick="openCreateUserBox()" th:if="${authoritySet.contains('createUser')}">新建</button>

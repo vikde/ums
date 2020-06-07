@@ -1,7 +1,5 @@
 package com.demo.ums.common;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.pagehelper.Page;
 import org.springframework.http.HttpStatus;
 
@@ -69,10 +67,6 @@ public class JsonResult {
                 total = (long) ((Collection) object).size();
             }
         }
-    }
-
-    public String toJson() {
-        return JSON.toJSONString(this, SerializerFeature.DisableCircularReferenceDetect);
     }
 
     public int getCode() {

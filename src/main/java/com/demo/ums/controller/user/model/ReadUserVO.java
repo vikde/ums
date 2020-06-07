@@ -1,7 +1,7 @@
 package com.demo.ums.controller.user.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.demo.ums.repository.model.UserPO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -14,14 +14,14 @@ public class ReadUserVO {
     private String username;
     private String name;
     private int userStatusType;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date preLoginTime;
     private int loginCount;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     public ReadUserVO(UserPO user) {

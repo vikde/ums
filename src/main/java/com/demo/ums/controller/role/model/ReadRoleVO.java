@@ -1,7 +1,7 @@
 package com.demo.ums.controller.role.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.demo.ums.repository.model.RolePO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,9 +12,9 @@ import java.util.Date;
 public class ReadRoleVO implements Serializable {
     private int roleId;
     private String roleName;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     private String description;
 

@@ -1,7 +1,7 @@
 package com.demo.ums.controller.permissiongroup.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.demo.ums.repository.model.PermissionGroupPO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -13,9 +13,9 @@ public class ReadPermissionGroupVO {
     private int permissionGroupId;
     private String permissionGroupName;
     private String description;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     public ReadPermissionGroupVO(PermissionGroupPO permissionGroup) {
