@@ -35,7 +35,7 @@ public class UserController {
     @RequestMapping(value = "createUser")
     public JsonResult createUser(@Valid CreateUserRequest createUserRequest) throws ApiException {
         userService.createUser(createUserRequest.getUsername(), createUserRequest.getName());
-        return JsonResult.getSuccessInstance();
+        return JsonResult.getSuccessInstance("用户创建成功");
     }
 
     /**
@@ -46,7 +46,7 @@ public class UserController {
     public JsonResult deleteUser(@Valid DeleteUserRequest deleteUserRequest) throws ApiException {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.deleteUser(username, deleteUserRequest);
-        return JsonResult.getSuccessInstance("删除用户成功");
+        return JsonResult.getSuccessInstance("用户删除成功");
     }
 
     /**
@@ -56,7 +56,7 @@ public class UserController {
     @RequestMapping(value = "updateUser")
     public JsonResult updateUser(@Valid UpdateUserRequest updateRoleRequest) {
         userService.updateUser(updateRoleRequest);
-        return JsonResult.getSuccessInstance("更新用户成功");
+        return JsonResult.getSuccessInstance("用户更新成功");
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserController {
     @RequestMapping(value = "assignUserRole")
     public JsonResult assignUserRole(@Valid AssignUserRoleRequest assignUserRoleRequest) {
         userService.assignUserRole(assignUserRoleRequest);
-        return JsonResult.getSuccessInstance();
+        return JsonResult.getSuccessInstance("用户角色分配成功");
     }
 
     /**
@@ -96,7 +96,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public JsonResult loginFailure(HttpServletRequest request) {
         Exception exception = (Exception) request.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-        return JsonResult.getInstance(HttpStatus.BAD_REQUEST, exception == null ? "error" : exception.getMessage());
+        return JsonResult.getRequestExceptionInstance(exception == null ? "error" : exception.getMessage());
     }
 
     /**
@@ -116,7 +116,7 @@ public class UserController {
         userService.changePassword(changePasswordRequest.getUsername(), changePasswordRequest.getPassword(),
                                    changePasswordRequest.getFirstPassword(), changePasswordRequest.getSecondPassword());
         SecurityContextHolder.clearContext();
-        return JsonResult.getSuccessInstance();
+        return JsonResult.getSuccessInstance("密码修改成功");
     }
 
 }

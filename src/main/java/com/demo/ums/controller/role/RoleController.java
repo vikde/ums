@@ -28,7 +28,7 @@ public class RoleController {
     @RequestMapping(value = "createRole")
     public JsonResult createPermissionGroup(@Valid CreateRoleRequest createRoleRequest) {
         roleService.createRole(createRoleRequest.getRoleName(), createRoleRequest.getDescription());
-        return JsonResult.getSuccessInstance("新建角色成功");
+        return JsonResult.getSuccessInstance("角色创建成功");
     }
 
     /**
@@ -38,7 +38,7 @@ public class RoleController {
     @RequestMapping(value = "deleteRole")
     public JsonResult deleteRole(@Valid DeleteRoleRequest deleteRoleRequest) throws ApiException {
         roleService.deleteRole(deleteRoleRequest.getRoleId());
-        return JsonResult.getSuccessInstance("删除角色成功");
+        return JsonResult.getSuccessInstance("角色删除成功");
     }
 
     /**
@@ -48,7 +48,7 @@ public class RoleController {
     @RequestMapping(value = "updateRole")
     public JsonResult updateRole(@Valid UpdateRoleRequest updateRoleRequest) {
         roleService.updateRole(updateRoleRequest);
-        return JsonResult.getSuccessInstance("更新角色成功");
+        return JsonResult.getSuccessInstance("角色更新成功");
     }
 
     /**
@@ -58,7 +58,7 @@ public class RoleController {
     @RequestMapping(value = "assignRolePermission")
     public JsonResult assignRolePermission(@Valid AssignRolePermissionRequest assignRolePermissionRequest) {
         roleService.assignRolePermission(assignRolePermissionRequest.getRoleId(), assignRolePermissionRequest.getPermissionIds());
-        return JsonResult.getSuccessInstance();
+        return JsonResult.getSuccessInstance("分配角色权限成功");
     }
 
     /**

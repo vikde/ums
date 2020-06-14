@@ -1,7 +1,7 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.UserRolePO;
-import com.demo.ums.repository.model.UserRolePOKey;
+import com.demo.ums.repository.model.UserRoleDO;
+import com.demo.ums.repository.model.UserRoleDOKey;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -12,17 +12,15 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
 public interface UserRoleMapper {
     @Delete({
         "delete from user_role",
         "where userId = #{userId,jdbcType=INTEGER}",
           "and roleId = #{roleId,jdbcType=INTEGER}"
     })
-    int deleteByPrimaryKey(UserRolePOKey key);
+    int deleteByPrimaryKey(UserRoleDOKey key);
 
     @Insert({
         "insert into user_role (userId, roleId, ",
@@ -30,10 +28,10 @@ public interface UserRoleMapper {
         "values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, ",
         "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
     })
-    int insert(UserRolePO record);
+    int insert(UserRoleDO record);
 
     @InsertProvider(type=UserRoleSqlProvider.class, method="insertSelective")
-    int insertSelective(UserRolePO record);
+    int insertSelective(UserRoleDO record);
 
     @Select({
         "select",
@@ -48,10 +46,10 @@ public interface UserRoleMapper {
         @Result(column="createTime", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="updateTime", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    UserRolePO selectByPrimaryKey(UserRolePOKey key);
+    UserRoleDO selectByPrimaryKey(UserRoleDOKey key);
 
     @UpdateProvider(type=UserRoleSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(UserRolePO record);
+    int updateByPrimaryKeySelective(UserRoleDO record);
 
     @Update({
         "update user_role",
@@ -60,5 +58,5 @@ public interface UserRoleMapper {
         "where userId = #{userId,jdbcType=INTEGER}",
           "and roleId = #{roleId,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(UserRolePO record);
+    int updateByPrimaryKey(UserRoleDO record);
 }

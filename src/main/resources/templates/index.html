@@ -16,6 +16,7 @@
         <ul class="layui-nav">
             <li class="layui-nav-item">
                 <a href="javascript:"><span th:text="${user.getName()}"></span><span class="layui-nav-more"></span></a>
+                <input id="userStatusType" type="hidden" th:value="${user.getUserStatusType()}"/>
                 <div class="layui-nav-child">
                     <table class="layui-table">
                         <colgroup>
@@ -47,7 +48,7 @@
                     </table>
                 </div>
             </li>
-            <li class="layui-nav-item"><a href="#" onclick="openChangePasswordBox()">修改密码</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="openChangePasswordBox(1)">修改密码</a></li>
             <li class="layui-nav-item"><a href="#" onclick="logout()">注销</a></li>
         </ul>
     </div>
@@ -151,11 +152,13 @@
 
     /**
      * 打开修改密码框
+     * @param closeBtn 1显示关闭按钮;0不显示
      */
-    function openChangePasswordBox() {
+    function openChangePasswordBox(closeBtn) {
         changePasswordLayerIndex = layui.layer.open({
             type: 1,
             move: false,
+            closeBtn: closeBtn,
             shade: [0.95, '#000'],
             title: '修改密码',
             content: $('#changePasswordBox').html(),
@@ -174,11 +177,11 @@
             secondPassword: data.field.secondPassword
         }, function (result) {
             layui.layer.msg(result.message);
-        }).error(function (result) {
-            layer.msg(result.responseJSON.message);
-            if (result.responseJSON.code === 0) {
+            if (result.code === 0) {
                 layui.layer.close(changePasswordLayerIndex);
             }
+        }).error(function (result) {
+            layer.msg(result.responseJSON.message);
         });
         return false;
     });
@@ -219,6 +222,17 @@
         $('.layui-side-shadow').removeClass('layui-side-shadow-show');
         $(".layui-side").removeClass('layui-side-show');
     }
+
+    /**
+     * 是否需要打开更新密码框
+     */
+    $(document).ready(function () {
+        var userStatusType = $("#userStatusType").val();
+        if ("1" === userStatusType) {
+            openChangePasswordBox(0);
+        }
+    });
+
 </script>
 </body>
 </html>

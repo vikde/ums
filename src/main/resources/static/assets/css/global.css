@@ -13,11 +13,21 @@ body, html {
 }
 
 .login-box {
-    width: 360px;
+    width: 450px;
     margin: 200px auto 0;
     border: solid 1px cadetblue;
     border-radius: 0;
-    padding: 40px 50px 0 0;
+}
+
+.login-box-title {
+    text-align: center;
+    font-size: 36px;
+    color: indianred;
+    margin: 20px 0;
+}
+
+.login-box-content {
+    padding: 0 50px 0 0;
 }
 
 .change-password-box {

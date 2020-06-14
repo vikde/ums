@@ -1,6 +1,6 @@
 package com.demo.ums.controller.user.model;
 
-import com.demo.ums.repository.model.UserPO;
+import com.demo.ums.repository.model.UserDO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -27,7 +27,7 @@ public class ReadOwnVO implements Serializable {
     public ReadOwnVO() {
     }
 
-    public ReadOwnVO(UserPO user) {
+    public ReadOwnVO(UserDO user) {
         userId = user.getUserId();
         username = user.getUsername();
         name = user.getName();

@@ -4,28 +4,20 @@ import java.io.Serializable;
 
 /**
  * @author mybatis-generator
- * @date 2019/05/01
+ * @date 2020/06/13
  */
-public class UserRolePOKey implements Serializable {
-    /**
-     *用户id
-     */
-    private Integer userId;
-
+public class RolePermissionDOKey implements Serializable {
     /**
      *角色id
      */
     private Integer roleId;
 
+    /**
+     *权限id
+     */
+    private Integer permissionId;
+
     private static final long serialVersionUID = 1L;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public Integer getRoleId() {
         return roleId;
@@ -33,6 +25,14 @@ public class UserRolePOKey implements Serializable {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public Integer getPermissionId() {
+        return permissionId;
+    }
+
+    public void setPermissionId(Integer permissionId) {
+        this.permissionId = permissionId;
     }
 
     @Override
@@ -46,17 +46,17 @@ public class UserRolePOKey implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        UserRolePOKey other = (UserRolePOKey) that;
-        return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
+        RolePermissionDOKey other = (RolePermissionDOKey) that;
+        return (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
+            && (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()));
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
+        result = prime * result + ((getPermissionId() == null) ? 0 : getPermissionId().hashCode());
         return result;
     }
 }

@@ -2,8 +2,8 @@ package com.demo.ums.configuration.security;
 
 import com.demo.ums.common.type.UserStatusType;
 import com.demo.ums.repository.mapper.ext.ExtUserMapper;
-import com.demo.ums.repository.model.PermissionPO;
-import com.demo.ums.repository.model.UserPO;
+import com.demo.ums.repository.model.PermissionDO;
+import com.demo.ums.repository.model.UserDO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,27 +26,25 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserPO userPO = extUserMapper.readUserByUsername(username);
-        if (null == userPO) {
+        UserDO userDO = extUserMapper.readUserByUsername(username);
+        if (null == userDO) {
             throw new UsernameNotFoundException("用户不存在");
         }
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
-        if (userPO.getUserStatusType() == UserStatusType.DELETED.getIndex()) {
+        if (userDO.getUserStatusType() == UserStatusType.DELETED.getIndex()) {
             accountNonExpired = false;
-        } else if (userPO.getUserStatusType() == UserStatusType.INACTIVE.getIndex()) {
-            credentialsNonExpired = false;
         }
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        List<PermissionPO> permissions = extUserMapper.readUserPermission(userPO.getUserId());
-        for (PermissionPO permission : permissions) {
+        List<PermissionDO> permissions = extUserMapper.readUserPermission(userDO.getUserId());
+        for (PermissionDO permission : permissions) {
             authorities.add(new SimpleGrantedAuthority(permission.getPath()));
         }
 
-        return new User(userPO.getUsername(), userPO.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        return new User(userDO.getUsername(), userDO.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
 }

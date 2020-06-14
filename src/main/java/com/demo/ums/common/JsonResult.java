@@ -1,10 +1,5 @@
 package com.demo.ums.common;
 
-import com.github.pagehelper.Page;
-import org.springframework.http.HttpStatus;
-
-import java.util.Collection;
-
 /**
  * Created on 2017/3/24.
  *
@@ -20,53 +15,46 @@ public class JsonResult {
      */
     private Long total;
 
+    private JsonResult() {
+    }
+
     /**
      * 创建一个返回实例
      */
     public static JsonResult getSuccessInstance() {
-        return getInstance(HttpStatus.OK, "success");
+        return getSuccessInstance("success");
     }
 
     /**
      * 创建一个返回实例
      */
     public static JsonResult getSuccessInstance(String message) {
-        return getInstance(HttpStatus.OK, message);
+        return getInstance(0, message);
     }
 
     /**
      * 创建一个返回实例
      */
-    public static JsonResult getInstance(HttpStatus httpStatus) {
-        return getInstance(httpStatus, httpStatus.getReasonPhrase());
+    public static JsonResult getRequestExceptionInstance(String message) {
+        return getInstance(1, message);
+    }
+
+    /**
+     * 创建一个返回实例
+     */
+    public static JsonResult getServiceExceptionInstance(String message) {
+        return getInstance(2, message);
     }
 
     /**
      * 创建一个返回实例,自定义返回信息
      */
-    public static JsonResult getInstance(HttpStatus httpStatus, String message) {
-        int code = httpStatus == HttpStatus.OK ? 0 : httpStatus.value();
+    private static JsonResult getInstance(int code, String message) {
         JsonResult jsonResult = new JsonResult();
         jsonResult.setCode(code);
         jsonResult.setMessage(message);
         jsonResult.setData(NULL_OBJECT);
         return jsonResult;
-    }
-
-    /**
-     * 设置数据和总量
-     */
-    @Deprecated
-    public void setDataAndTotal(Object object) {
-        data = object;
-        if (object != null) {
-            if (object instanceof Page) {
-                Page page = (Page) object;
-                total = page.getTotal();
-            } else if (object instanceof Collection) {
-                total = (long) ((Collection) object).size();
-            }
-        }
     }
 
     public int getCode() {

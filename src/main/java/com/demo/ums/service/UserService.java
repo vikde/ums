@@ -9,8 +9,8 @@ import com.demo.ums.controller.user.model.*;
 import com.demo.ums.repository.mapper.UserMapper;
 import com.demo.ums.repository.mapper.ext.ExtUserMapper;
 import com.demo.ums.repository.mapper.ext.ExtUserRoleMapper;
-import com.demo.ums.repository.model.PermissionPO;
-import com.demo.ums.repository.model.UserPO;
+import com.demo.ums.repository.model.PermissionDO;
+import com.demo.ums.repository.model.UserDO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Splitter;
@@ -39,11 +39,11 @@ public class UserService {
      * 创建用户
      */
     public void createUser(String username, String name) throws ApiException {
-        UserPO oldUser = extUserMapper.readUserByUsername(username);
+        UserDO oldUser = extUserMapper.readUserByUsername(username);
         if (oldUser != null) {
             throw new ApiException("用户已存在");
         }
-        UserPO user = new UserPO();
+        UserDO user = new UserDO();
         user.setUsername(username);
         user.setName(name);
         user.setPassword(PasswordUtil.encryptPassword(Config.INIT_PASSWORD));
@@ -55,7 +55,7 @@ public class UserService {
      * 删除用户
      */
     public void deleteUser(String currentUsername, DeleteUserRequest deleteUserRequest) throws ApiException {
-        UserPO user = userMapper.selectByPrimaryKey(deleteUserRequest.getUserId());
+        UserDO user = userMapper.selectByPrimaryKey(deleteUserRequest.getUserId());
         if (user == null) {
             throw new ApiException("用户不存在");
         }
@@ -65,7 +65,7 @@ public class UserService {
         if (currentUsername.equalsIgnoreCase(user.getUsername())) {
             throw new ApiException("不能删除自己");
         }
-        UserPO updateUser = new UserPO();
+        UserDO updateUser = new UserDO();
         updateUser.setUserId(deleteUserRequest.getUserId());
         updateUser.setUserStatusType(UserStatusType.DELETED.getIndex());
         userMapper.updateByPrimaryKeySelective(updateUser);
@@ -75,7 +75,7 @@ public class UserService {
      * 更新用户
      */
     public void updateUser(UpdateUserRequest updateUserRequest) {
-        UserPO user = new UserPO();
+        UserDO user = new UserDO();
         user.setUserId(updateUserRequest.getUserId());
         user.setName(updateUserRequest.getName());
         userMapper.updateByPrimaryKeySelective(user);
@@ -100,15 +100,15 @@ public class UserService {
      */
     public JsonResult readUser(ReadUserRequest readUserRequest) {
         PageHelper.startPage(readUserRequest.getPageNumber(), readUserRequest.getPageSize());
-        List<UserPO> userList = extUserMapper.readUser(readUserRequest.getUserId(), readUserRequest.getUsername(), readUserRequest.getName());
+        List<UserDO> userList = extUserMapper.readUser(readUserRequest.getUserId(), readUserRequest.getUsername(), readUserRequest.getName());
 
         JsonResult jsonResult = JsonResult.getSuccessInstance();
-        jsonResult.setTotal(userList instanceof Page ? ((Page) userList).getTotal() : userList.size());
-        List<ReadUserVO> readUserRespons = new ArrayList<>(userList.size());
-        for (UserPO user : userList) {
-            readUserRespons.add(new ReadUserVO(user));
+        jsonResult.setTotal(userList instanceof Page ? ((Page<UserDO>) userList).getTotal() : userList.size());
+        List<ReadUserVO> readUserVOList = new ArrayList<>(userList.size());
+        for (UserDO user : userList) {
+            readUserVOList.add(new ReadUserVO(user));
         }
-        jsonResult.setData(readUserRespons);
+        jsonResult.setData(readUserVOList);
         return jsonResult;
     }
 
@@ -124,15 +124,14 @@ public class UserService {
      * 获取当前用户信息与权限列表
      */
     public ReadOwnVO readOwn(String username) {
-        UserPO user = extUserMapper.readUserByUsername(username);
-        ReadOwnVO readOwnVO = new ReadOwnVO(user);
-        return readOwnVO;
+        UserDO user = extUserMapper.readUserByUsername(username);
+        return new ReadOwnVO(user);
     }
 
     /**
      * 获取用户权限
      */
-    public List<PermissionPO> readUserPermission(int userId) {
+    public List<PermissionDO> readUserPermission(int userId) {
         return extUserMapper.readUserPermission(userId);
     }
 
@@ -143,7 +142,7 @@ public class UserService {
         if (!firstPassword.equalsIgnoreCase(secondPassword)) {
             throw new ApiException("两次输入的密码不一致密码");
         }
-        UserPO user = extUserMapper.readUserByUsername(username);
+        UserDO user = extUserMapper.readUserByUsername(username);
         if (user == null || !password.equals(PasswordUtil.decryptPassword(user.getPassword()))) {
             throw new ApiException("用户名或密码错误");
         }

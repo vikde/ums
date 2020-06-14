@@ -7,7 +7,6 @@
         <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
-        <plugin type="com.demo.ums.generator.CustomPlugin"/>
         <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
             <property name="searchString" value="Example$"/>
             <property name="replaceString" value="Criteria"/>
@@ -33,31 +32,31 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="UserPO" mapperName="UserMapper" sqlProviderName="UserSqlProvider" enableUpdateByExample="false" enableDeleteByExample="false"
+        <table tableName="user" domainObjectName="UserDO" mapperName="UserMapper" sqlProviderName="UserSqlProvider" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="userId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="role" domainObjectName="RolePO" mapperName="RoleMapper" sqlProviderName="RoleSqlProvider" enableUpdateByExample="false" enableDeleteByExample="false"
+        <table tableName="role" domainObjectName="RoleDO" mapperName="RoleMapper" sqlProviderName="RoleSqlProvider" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="roleId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="permission_group" domainObjectName="PermissionGroupPO" mapperName="PermissionGroupMapper" sqlProviderName="PermissionGroupSqlProvider"
+        <table tableName="permission_group" domainObjectName="PermissionGroupDO" mapperName="PermissionGroupMapper" sqlProviderName="PermissionGroupSqlProvider"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="permissionGroupId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="permission" domainObjectName="PermissionPO" mapperName="PermissionMapper" sqlProviderName="PermissionSqlProvider" enableUpdateByExample="false"
+        <table tableName="permission" domainObjectName="PermissionDO" mapperName="PermissionMapper" sqlProviderName="PermissionSqlProvider" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="permissionId" sqlStatement="mysql" identity="true"/>
         </table>
-        <table tableName="role_permission" domainObjectName="RolePermissionPO" mapperName="RolePermissionMapper" sqlProviderName="RolePermissionSqlProvider"
+        <table tableName="role_permission" domainObjectName="RolePermissionDO" mapperName="RolePermissionMapper" sqlProviderName="RolePermissionSqlProvider"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
         </table>
-        <table tableName="user_role" domainObjectName="UserRolePO" mapperName="UserRoleMapper" sqlProviderName="UserRoleSqlProvider" enableUpdateByExample="false"
+        <table tableName="user_role" domainObjectName="UserRoleDO" mapperName="UserRoleMapper" sqlProviderName="UserRoleSqlProvider" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="true"/>
         </table>

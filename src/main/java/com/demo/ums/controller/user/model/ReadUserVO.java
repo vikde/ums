@@ -1,6 +1,6 @@
 package com.demo.ums.controller.user.model;
 
-import com.demo.ums.repository.model.UserPO;
+import com.demo.ums.repository.model.UserDO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ public class ReadUserVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public ReadUserVO(UserPO user) {
+    public ReadUserVO(UserDO user) {
         userId = user.getUserId();
         username = user.getUsername();
         name = user.getName();

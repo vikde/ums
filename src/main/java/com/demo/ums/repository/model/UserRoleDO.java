@@ -5,9 +5,9 @@ import java.util.Date;
 
 /**
  * @author mybatis-generator
- * @date 2019/05/01
+ * @date 2020/06/13
  */
-public class UserRolePO extends UserRolePOKey implements Serializable {
+public class UserRoleDO extends UserRoleDOKey implements Serializable {
     /**
      *创建时间
      */
@@ -47,7 +47,7 @@ public class UserRolePO extends UserRolePOKey implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        UserRolePO other = (UserRolePO) that;
+        UserRoleDO other = (UserRoleDO) that;
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))

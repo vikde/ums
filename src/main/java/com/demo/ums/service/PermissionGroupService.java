@@ -8,7 +8,7 @@ import com.demo.ums.controller.permissiongroup.model.ReadPermissionGroupVO;
 import com.demo.ums.repository.mapper.PermissionGroupMapper;
 import com.demo.ums.repository.mapper.ext.ExtPermissionGroupMapper;
 import com.demo.ums.repository.mapper.ext.ExtPermissionMapper;
-import com.demo.ums.repository.model.PermissionGroupPO;
+import com.demo.ums.repository.model.PermissionGroupDO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class PermissionGroupService {
      * 创建权限组
      */
     public void createPermissionGroup(String permissionGroupName, String description) {
-        PermissionGroupPO permissionGroup = new PermissionGroupPO();
+        PermissionGroupDO permissionGroup = new PermissionGroupDO();
         permissionGroup.setPermissionGroupName(permissionGroupName);
         permissionGroup.setDescription(description);
         permissionGroupMapper.insertSelective(permissionGroup);
@@ -57,7 +57,7 @@ public class PermissionGroupService {
      * 更新权限组
      */
     public void updatePermissionGroup(int permissionGroupId, String permissionGroupName, String description) {
-        PermissionGroupPO permissionGroup = new PermissionGroupPO();
+        PermissionGroupDO permissionGroup = new PermissionGroupDO();
         permissionGroup.setPermissionGroupId(permissionGroupId);
         permissionGroup.setPermissionGroupName(permissionGroupName);
         permissionGroup.setDescription(description);
@@ -71,12 +71,12 @@ public class PermissionGroupService {
         if (readPermissionGroupRequest.getPageNumber() != null && readPermissionGroupRequest.getPageSize() != null) {
             PageHelper.startPage(readPermissionGroupRequest.getPageNumber(), readPermissionGroupRequest.getPageSize());
         }
-        List<PermissionGroupPO> permissionGroupList = extPermissionGroupMapper.readPermissionGroup(readPermissionGroupRequest.getPermissionGroupId(), readPermissionGroupRequest.getPermissionGroupName());
+        List<PermissionGroupDO> permissionGroupList = extPermissionGroupMapper.readPermissionGroup(readPermissionGroupRequest.getPermissionGroupId(), readPermissionGroupRequest.getPermissionGroupName());
 
         JsonResult jsonResult = JsonResult.getSuccessInstance();
-        jsonResult.setTotal(permissionGroupList instanceof Page ? ((Page) permissionGroupList).getTotal() : permissionGroupList.size());
+        jsonResult.setTotal(permissionGroupList instanceof Page ? ((Page<PermissionGroupDO>) permissionGroupList).getTotal() : permissionGroupList.size());
         List<ReadPermissionGroupVO> readPermissionGroupRespons = new ArrayList<>(permissionGroupList.size());
-        for (PermissionGroupPO permissionGroup : permissionGroupList) {
+        for (PermissionGroupDO permissionGroup : permissionGroupList) {
             readPermissionGroupRespons.add(new ReadPermissionGroupVO(permissionGroup));
         }
         jsonResult.setData(readPermissionGroupRespons);

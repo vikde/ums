@@ -1,6 +1,6 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.RolePO;
+import com.demo.ums.repository.model.RoleDO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -12,10 +12,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
 public interface RoleMapper {
     @Delete({
         "delete from role",
@@ -30,11 +28,11 @@ public interface RoleMapper {
         "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="roleId", before=false, resultType=Integer.class)
-    int insert(RolePO record);
+    int insert(RoleDO record);
 
     @InsertProvider(type=RoleSqlProvider.class, method="insertSelective")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="roleId", before=false, resultType=Integer.class)
-    int insertSelective(RolePO record);
+    int insertSelective(RoleDO record);
 
     @Select({
         "select",
@@ -49,10 +47,10 @@ public interface RoleMapper {
         @Result(column="createTime", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="updateTime", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    RolePO selectByPrimaryKey(Integer roleId);
+    RoleDO selectByPrimaryKey(Integer roleId);
 
     @UpdateProvider(type=RoleSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(RolePO record);
+    int updateByPrimaryKeySelective(RoleDO record);
 
     @Update({
         "update role",
@@ -62,5 +60,5 @@ public interface RoleMapper {
           "updateTime = #{updateTime,jdbcType=TIMESTAMP}",
         "where roleId = #{roleId,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(RolePO record);
+    int updateByPrimaryKey(RoleDO record);
 }

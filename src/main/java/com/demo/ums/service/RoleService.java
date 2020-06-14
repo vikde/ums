@@ -8,8 +8,8 @@ import com.demo.ums.repository.mapper.RoleMapper;
 import com.demo.ums.repository.mapper.ext.ExtPermissionMapper;
 import com.demo.ums.repository.mapper.ext.ExtRoleMapper;
 import com.demo.ums.repository.mapper.ext.ExtRolePermissionMapper;
-import com.demo.ums.repository.model.RolePO;
-import com.demo.ums.repository.model.RolePermissionPO;
+import com.demo.ums.repository.model.RoleDO;
+import com.demo.ums.repository.model.RolePermissionDO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Splitter;
@@ -50,7 +50,7 @@ public class RoleService {
      */
     public void deleteRole(int roleId) throws ApiException {
         PageHelper.startPage(1, 1);
-        List<RolePermissionPO> rolePermissions = extRolePermissionMapper.readRolePermission(roleId, null);
+        List<RolePermissionDO> rolePermissions = extRolePermissionMapper.readRolePermission(roleId, null);
         if (!CollectionUtils.isEmpty(rolePermissions)) {
             throw new ApiException("角色还在使用");
         }
@@ -61,7 +61,7 @@ public class RoleService {
      * 更新角色
      */
     public void updateRole(UpdateRoleRequest updateRoleRequest) {
-        RolePO role = new RolePO();
+        RoleDO role = new RoleDO();
         role.setRoleId(updateRoleRequest.getRoleId());
         role.setRoleName(updateRoleRequest.getRoleName());
         role.setDescription(updateRoleRequest.getDescription());
@@ -97,15 +97,15 @@ public class RoleService {
         if (readRoleRequest.getPageNumber() != null && readRoleRequest.getPageSize() != null) {
             PageHelper.startPage(readRoleRequest.getPageNumber(), readRoleRequest.getPageSize());
         }
-        List<RolePO> roleList = extRoleMapper.readRole(readRoleRequest.getRoleId(), readRoleRequest.getRoleName());
+        List<RoleDO> roleList = extRoleMapper.readRole(readRoleRequest.getRoleId(), readRoleRequest.getRoleName());
 
         JsonResult jsonResult = JsonResult.getSuccessInstance();
-        jsonResult.setTotal(roleList instanceof Page ? ((Page) roleList).getTotal() : roleList.size());
-        List<ReadRoleVO> readRoleRespons = new ArrayList<>(roleList.size());
-        for (RolePO role : roleList) {
-            readRoleRespons.add(new ReadRoleVO(role));
+        jsonResult.setTotal(roleList instanceof Page ? ((Page<RoleDO>) roleList).getTotal() : roleList.size());
+        List<ReadRoleVO> readRoleVOList = new ArrayList<>(roleList.size());
+        for (RoleDO role : roleList) {
+            readRoleVOList.add(new ReadRoleVO(role));
         }
-        jsonResult.setData(readRoleRespons);
+        jsonResult.setData(readRoleVOList);
         return jsonResult;
     }
 

@@ -1,11 +1,10 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.UserPO;
+import com.demo.ums.repository.model.UserDO;
 import org.apache.ibatis.jdbc.SQL;
 
 public class UserSqlProvider {
-
-    public String insertSelective(UserPO record) {
+    public String insertSelective(UserDO record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("user");
         
@@ -48,7 +47,7 @@ public class UserSqlProvider {
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(UserPO record) {
+    public String updateByPrimaryKeySelective(UserDO record) {
         SQL sql = new SQL();
         sql.UPDATE("user");
         

@@ -1,6 +1,6 @@
 package com.demo.ums.controller.role.model;
 
-import com.demo.ums.repository.model.RolePO;
+import com.demo.ums.repository.model.RoleDO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -18,7 +18,7 @@ public class ReadRoleVO implements Serializable {
     private Date updateTime;
     private String description;
 
-    public ReadRoleVO(RolePO role) {
+    public ReadRoleVO(RoleDO role) {
         this.roleId = role.getRoleId();
         this.roleName = role.getRoleName();
         this.createTime = role.getCreateTime();

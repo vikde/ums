@@ -5,21 +5,21 @@ import java.util.Date;
 
 /**
  * @author mybatis-generator
- * @date 2019/05/01
+ * @date 2020/06/13
  */
-public class PermissionGroupPO implements Serializable {
+public class RoleDO implements Serializable {
     /**
-     *权限组id
+     *角色id
      */
-    private Integer permissionGroupId;
+    private Integer roleId;
 
     /**
-     *权限组名称
+     *角色名称
      */
-    private String permissionGroupName;
+    private String roleName;
 
     /**
-     *权限组描述
+     *角色描述
      */
     private String description;
 
@@ -35,20 +35,20 @@ public class PermissionGroupPO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getPermissionGroupId() {
-        return permissionGroupId;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setPermissionGroupId(Integer permissionGroupId) {
-        this.permissionGroupId = permissionGroupId;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-    public String getPermissionGroupName() {
-        return permissionGroupName;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setPermissionGroupName(String permissionGroupName) {
-        this.permissionGroupName = permissionGroupName == null ? null : permissionGroupName.trim();
+    public void setRoleName(String roleName) {
+        this.roleName = roleName == null ? null : roleName.trim();
     }
 
     public String getDescription() {
@@ -86,9 +86,9 @@ public class PermissionGroupPO implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        PermissionGroupPO other = (PermissionGroupPO) that;
-        return (this.getPermissionGroupId() == null ? other.getPermissionGroupId() == null : this.getPermissionGroupId().equals(other.getPermissionGroupId()))
-            && (this.getPermissionGroupName() == null ? other.getPermissionGroupName() == null : this.getPermissionGroupName().equals(other.getPermissionGroupName()))
+        RoleDO other = (RoleDO) that;
+        return (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
+            && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
@@ -98,8 +98,8 @@ public class PermissionGroupPO implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getPermissionGroupId() == null) ? 0 : getPermissionGroupId().hashCode());
-        result = prime * result + ((getPermissionGroupName() == null) ? 0 : getPermissionGroupName().hashCode());
+        result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
+        result = prime * result + ((getRoleName() == null) ? 0 : getRoleName().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());

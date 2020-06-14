@@ -1,7 +1,7 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.RolePermissionPO;
-import com.demo.ums.repository.model.RolePermissionPOKey;
+import com.demo.ums.repository.model.RolePermissionDO;
+import com.demo.ums.repository.model.RolePermissionDOKey;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -12,17 +12,15 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
 public interface RolePermissionMapper {
     @Delete({
         "delete from role_permission",
         "where roleId = #{roleId,jdbcType=INTEGER}",
           "and permissionId = #{permissionId,jdbcType=INTEGER}"
     })
-    int deleteByPrimaryKey(RolePermissionPOKey key);
+    int deleteByPrimaryKey(RolePermissionDOKey key);
 
     @Insert({
         "insert into role_permission (roleId, permissionId, ",
@@ -30,10 +28,10 @@ public interface RolePermissionMapper {
         "values (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER}, ",
         "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
     })
-    int insert(RolePermissionPO record);
+    int insert(RolePermissionDO record);
 
     @InsertProvider(type=RolePermissionSqlProvider.class, method="insertSelective")
-    int insertSelective(RolePermissionPO record);
+    int insertSelective(RolePermissionDO record);
 
     @Select({
         "select",
@@ -48,10 +46,10 @@ public interface RolePermissionMapper {
         @Result(column="createTime", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="updateTime", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    RolePermissionPO selectByPrimaryKey(RolePermissionPOKey key);
+    RolePermissionDO selectByPrimaryKey(RolePermissionDOKey key);
 
     @UpdateProvider(type=RolePermissionSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(RolePermissionPO record);
+    int updateByPrimaryKeySelective(RolePermissionDO record);
 
     @Update({
         "update role_permission",
@@ -60,5 +58,5 @@ public interface RolePermissionMapper {
         "where roleId = #{roleId,jdbcType=INTEGER}",
           "and permissionId = #{permissionId,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(RolePermissionPO record);
+    int updateByPrimaryKey(RolePermissionDO record);
 }

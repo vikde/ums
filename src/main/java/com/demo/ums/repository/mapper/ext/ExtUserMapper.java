@@ -1,7 +1,7 @@
 package com.demo.ums.repository.mapper.ext;
 
-import com.demo.ums.repository.model.PermissionPO;
-import com.demo.ums.repository.model.UserPO;
+import com.demo.ums.repository.model.PermissionDO;
+import com.demo.ums.repository.model.UserDO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +45,7 @@ public interface ExtUserMapper {
      * @return 用户列表
      */
     @SelectProvider(type = ExtUserSqlProvider.class, method = "readUser")
-    List<UserPO> readUser(@Param("userId") Integer userId, @Param("username") String username, @Param("name") String name);
+    List<UserDO> readUser(@Param("userId") Integer userId, @Param("username") String username, @Param("name") String name);
 
     /**
      * 通过用户名查询用户
@@ -54,7 +54,7 @@ public interface ExtUserMapper {
      * @return 用户
      */
     @Select("SELECT * FROM user WHERE username=#{username}")
-    UserPO readUserByUsername(@Param("username") String username);
+    UserDO readUserByUsername(@Param("username") String username);
 
     /**
      * 与用户登录
@@ -75,7 +75,7 @@ public interface ExtUserMapper {
             "RIGHT JOIN role ON user_role.roleId = role.roleId RIGHT JOIN role_permission ON role.roleId = role_permission.roleId " +
             "RIGHT JOIN permission ON role_permission.permissionId = permission.permissionId " +
             "WHERE user.userId = #{userId}")
-    List<PermissionPO> readUserPermission(@Param("userId") int userId);
+    List<PermissionDO> readUserPermission(@Param("userId") int userId);
 
     /**
      * 修改用户密码

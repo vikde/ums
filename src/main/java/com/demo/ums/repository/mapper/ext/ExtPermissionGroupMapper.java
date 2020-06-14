@@ -1,6 +1,6 @@
 package com.demo.ums.repository.mapper.ext;
 
-import com.demo.ums.repository.model.PermissionGroupPO;
+import com.demo.ums.repository.model.PermissionGroupDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -23,5 +23,5 @@ public interface ExtPermissionGroupMapper {
      * @return 权限组列表
      */
     @SelectProvider(type = ExtPermissionGroupSqlProvider.class, method = "readPermissionGroup")
-    List<PermissionGroupPO> readPermissionGroup(@Param("permissionGroupId") Integer permissionGroupId, @Param("permissionGroupName") String permissionGroupName);
+    List<PermissionGroupDO> readPermissionGroup(@Param("permissionGroupId") Integer permissionGroupId, @Param("permissionGroupName") String permissionGroupName);
 }

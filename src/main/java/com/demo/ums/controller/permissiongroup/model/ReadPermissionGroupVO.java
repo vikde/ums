@@ -1,6 +1,6 @@
 package com.demo.ums.controller.permissiongroup.model;
 
-import com.demo.ums.repository.model.PermissionGroupPO;
+import com.demo.ums.repository.model.PermissionGroupDO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -18,7 +18,7 @@ public class ReadPermissionGroupVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public ReadPermissionGroupVO(PermissionGroupPO permissionGroup) {
+    public ReadPermissionGroupVO(PermissionGroupDO permissionGroup) {
         this.permissionGroupId = permissionGroup.getPermissionGroupId();
         this.permissionGroupName = permissionGroup.getPermissionGroupName();
         this.description = permissionGroup.getDescription();

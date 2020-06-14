@@ -31,7 +31,7 @@ public class PermissionGroupController {
     @RequestMapping(value = "createPermissionGroup")
     public JsonResult createPermissionGroup(@Valid CreatePermissionGroupRequest createPermissionGroupRequest) {
         permissionGroupService.createPermissionGroup(createPermissionGroupRequest.getPermissionGroupName(), createPermissionGroupRequest.getDescription());
-        return JsonResult.getSuccessInstance("创建权限组成功");
+        return JsonResult.getSuccessInstance("权限组创建成功");
     }
 
     /**
@@ -41,7 +41,7 @@ public class PermissionGroupController {
     @RequestMapping(value = "deletePermissionGroup")
     public JsonResult deletePermissionGroup(@Valid DeletePermissionGroupRequest deletePermissionGroupRequest) throws ApiException {
         permissionGroupService.deletePermissionGroup(deletePermissionGroupRequest.getPermissionGroupId());
-        return JsonResult.getSuccessInstance("删除权限组成功");
+        return JsonResult.getSuccessInstance("权限组删除成功");
     }
 
     /**
@@ -52,7 +52,7 @@ public class PermissionGroupController {
     public JsonResult updatePermissionGroup(@Valid UpdatePermissionGroupRequest updatePermissionGroupRequest) {
         permissionGroupService.updatePermissionGroup(updatePermissionGroupRequest.getPermissionGroupId(), updatePermissionGroupRequest.getPermissionGroupName(),
                                                      updatePermissionGroupRequest.getDescription());
-        return JsonResult.getSuccessInstance("更新权限组成功");
+        return JsonResult.getSuccessInstance("权限组更新成功");
     }
 
     /**

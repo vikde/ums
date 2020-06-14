@@ -1,6 +1,6 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.UserPO;
+import com.demo.ums.repository.model.UserDO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -12,10 +12,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
 public interface UserMapper {
     @Delete({
         "delete from user",
@@ -36,11 +34,11 @@ public interface UserMapper {
         "#{updateTime,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="userId", before=false, resultType=Integer.class)
-    int insert(UserPO record);
+    int insert(UserDO record);
 
     @InsertProvider(type=UserSqlProvider.class, method="insertSelective")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="userId", before=false, resultType=Integer.class)
-    int insertSelective(UserPO record);
+    int insertSelective(UserDO record);
 
     @Select({
         "select",
@@ -61,10 +59,10 @@ public interface UserMapper {
         @Result(column="createTime", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="updateTime", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    UserPO selectByPrimaryKey(Integer userId);
+    UserDO selectByPrimaryKey(Integer userId);
 
     @UpdateProvider(type=UserSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(UserPO record);
+    int updateByPrimaryKeySelective(UserDO record);
 
     @Update({
         "update user",
@@ -79,5 +77,5 @@ public interface UserMapper {
           "updateTime = #{updateTime,jdbcType=TIMESTAMP}",
         "where userId = #{userId,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(UserPO record);
+    int updateByPrimaryKey(UserDO record);
 }

@@ -29,7 +29,7 @@ public class PermissionController {
     public JsonResult createPermission(@Valid CreatePermissionRequest createPermissionRequest) {
         permissionService.createPermission(createPermissionRequest.getPermissionName(), createPermissionRequest.getPermissionGroupId(),
                                            createPermissionRequest.getPath(), createPermissionRequest.getDescription());
-        return JsonResult.getSuccessInstance("新建权限成功");
+        return JsonResult.getSuccessInstance("权限创建成功");
     }
 
     /**
@@ -39,7 +39,7 @@ public class PermissionController {
     @RequestMapping(value = "deletePermission")
     public JsonResult deletePermission(@Valid DeletePermissionRequest deletePermissionRequest) throws ApiException {
         permissionService.deletePermission(deletePermissionRequest.getPermissionId());
-        return JsonResult.getSuccessInstance("删除权限成功");
+        return JsonResult.getSuccessInstance("权限删除成功");
     }
 
     /**
@@ -49,7 +49,7 @@ public class PermissionController {
     @RequestMapping(value = "updatePermission")
     public JsonResult updatePermission(@Valid UpdatePermissionRequest updatePermissionRequest) {
         permissionService.updatePermission(updatePermissionRequest);
-        return JsonResult.getSuccessInstance("更新权限组成功");
+        return JsonResult.getSuccessInstance("权限更新成功");
     }
 
     /**

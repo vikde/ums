@@ -1,11 +1,10 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.PermissionGroupPO;
+import com.demo.ums.repository.model.PermissionGroupDO;
 import org.apache.ibatis.jdbc.SQL;
 
 public class PermissionGroupSqlProvider {
-
-    public String insertSelective(PermissionGroupPO record) {
+    public String insertSelective(PermissionGroupDO record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("permission_group");
         
@@ -28,7 +27,7 @@ public class PermissionGroupSqlProvider {
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(PermissionGroupPO record) {
+    public String updateByPrimaryKeySelective(PermissionGroupDO record) {
         SQL sql = new SQL();
         sql.UPDATE("permission_group");
         

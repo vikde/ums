@@ -1,6 +1,6 @@
 package com.demo.ums.repository.mapper;
 
-import com.demo.ums.repository.model.PermissionPO;
+import com.demo.ums.repository.model.PermissionDO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -12,10 +12,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
 public interface PermissionMapper {
     @Delete({
         "delete from permission",
@@ -32,11 +30,11 @@ public interface PermissionMapper {
         "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="permissionId", before=false, resultType=Integer.class)
-    int insert(PermissionPO record);
+    int insert(PermissionDO record);
 
     @InsertProvider(type=PermissionSqlProvider.class, method="insertSelective")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="permissionId", before=false, resultType=Integer.class)
-    int insertSelective(PermissionPO record);
+    int insertSelective(PermissionDO record);
 
     @Select({
         "select",
@@ -54,10 +52,10 @@ public interface PermissionMapper {
         @Result(column="createTime", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="updateTime", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    PermissionPO selectByPrimaryKey(Integer permissionId);
+    PermissionDO selectByPrimaryKey(Integer permissionId);
 
     @UpdateProvider(type=PermissionSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(PermissionPO record);
+    int updateByPrimaryKeySelective(PermissionDO record);
 
     @Update({
         "update permission",
@@ -69,5 +67,5 @@ public interface PermissionMapper {
           "updateTime = #{updateTime,jdbcType=TIMESTAMP}",
         "where permissionId = #{permissionId,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(PermissionPO record);
+    int updateByPrimaryKey(PermissionDO record);
 }

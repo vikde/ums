@@ -24,7 +24,7 @@ public enum UserStatusType {
         this.index = index;
     }
 
-    private int index;
+    private final int index;
 
     public int getIndex() {
         return index;
